@@ -1,5 +1,5 @@
 {
-  "updateTime": "2019-03-29T22:55:39.422193Z",
+  "updateTime": "2019-04-01T18:26:51.569265Z",
   "sources": [
     {
       "generator": {
@@ -10,10 +10,10 @@
     },
     {
       "git": {
-        "name": "googleapis-private",
-        "remote": "https://github.com/googleapis/googleapis-private.git",
-        "sha": "65ec0bf1d219bcbb063d5e567801105a03073849",
-        "internalRef": "241047721"
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "97b4ae850d71c598dda02b4e62aa2c81d442aa3e",
+        "internalRef": "241345717"
       }
     },
     {
@@ -27,7 +27,7 @@
   "destinations": [
     {
       "client": {
-        "source": "googleapis-private",
+        "source": "googleapis",
         "apiName": "datalabeling",
         "apiVersion": "v1beta1",
         "language": "nodejs",
