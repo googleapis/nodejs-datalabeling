@@ -25,7 +25,7 @@ logging.basicConfig(level=logging.DEBUG)
 gapic = gcp.GAPICGenerator()
 versions = ['v1beta1']
 for version in versions:
-    library = gapic.node_library('datalabeling', version, private=True)
+    library = gapic.node_library('datalabeling', version)
     s.copy(library, excludes=['src/index.js', 'README.md', 'package.json'])
 
 # Copy common templates
