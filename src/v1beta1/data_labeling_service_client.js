@@ -67,7 +67,9 @@ class DataLabelingServiceClient {
     const gaxModule = !global.isBrowser && opts.fallback ? gax.fallback : gax;
 
     const servicePath =
-      opts.servicePath || opts.apiEndpoint || this.constructor.servicePath;
+      opts.servicePath ||
+      opts.apiEndpoint ||
+      this.constructor.servicePath;
 
     // Ensure that options include the service address and port.
     opts = Object.assign(
@@ -108,15 +110,11 @@ class DataLabelingServiceClient {
     // For Node.js, pass the path to JSON proto file.
     // For browsers, pass the JSON content.
 
-    const nodejsProtoPath = path.join(
-      __dirname,
-      '..',
-      '..',
-      'protos',
-      'protos.json'
-    );
+    const nodejsProtoPath = path.join(__dirname, '..', '..', 'protos', 'protos.json');
     const protos = gaxGrpc.loadProto(
-      opts.fallback ? require('../../protos/protos.json') : nodejsProtoPath
+      opts.fallback ?
+        require("../../protos/protos.json") :
+        nodejsProtoPath
     );
 
     // This API contains "path templates"; forward-slash-separated
@@ -147,7 +145,9 @@ class DataLabelingServiceClient {
       instructionPathTemplate: new gaxModule.PathTemplate(
         'projects/{project}/instructions/{instruction}'
       ),
-      projectPathTemplate: new gaxModule.PathTemplate('projects/{project}'),
+      projectPathTemplate: new gaxModule.PathTemplate(
+        'projects/{project}'
+      ),
     };
 
     // Some of the methods on this service return "paged" results,
@@ -201,9 +201,9 @@ class DataLabelingServiceClient {
       ),
     };
 
-    const protoFilesRoot = opts.fallback
-      ? gaxModule.protobuf.Root.fromJSON(require('../../protos/protos.json'))
-      : gaxModule.protobuf.loadSync(nodejsProtoPath);
+    const protoFilesRoot = opts.fallback ?
+      gaxModule.protobuf.Root.fromJSON(require("../../protos/protos.json")) :
+      gaxModule.protobuf.loadSync(nodejsProtoPath);
 
     // This API contains "long-running operations", which return a
     // an Operation object that allows for tracking of the operation,
@@ -299,11 +299,9 @@ class DataLabelingServiceClient {
     // Put together the "service stub" for
     // google.cloud.datalabeling.v1beta1.DataLabelingService.
     const dataLabelingServiceStub = gaxGrpc.createStub(
-      opts.fallback
-        ? protos.lookupService(
-            'google.cloud.datalabeling.v1beta1.DataLabelingService'
-          )
-        : protos.google.cloud.datalabeling.v1beta1.DataLabelingService,
+      opts.fallback ?
+        protos.lookupService('google.cloud.datalabeling.v1beta1.DataLabelingService') :
+        protos.google.cloud.datalabeling.v1beta1.DataLabelingService,
       opts
     );
 
@@ -357,8 +355,7 @@ class DataLabelingServiceClient {
       this._innerApiCalls[methodName] = gaxModule.createApiCall(
         innerCallPromise,
         defaults[methodName],
-        this._descriptors.page[methodName] ||
-          this._descriptors.longrunning[methodName]
+        this._descriptors.page[methodName] || this._descriptors.longrunning[methodName]
       );
     }
   }
@@ -390,7 +387,9 @@ class DataLabelingServiceClient {
    * in this service.
    */
   static get scopes() {
-    return ['https://www.googleapis.com/auth/cloud-platform'];
+    return [
+      'https://www.googleapis.com/auth/cloud-platform',
+    ];
   }
 
   /**
@@ -461,11 +460,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.createDataset(request, options, callback);
   }
@@ -516,11 +514,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.getDataset(request, options, callback);
   }
@@ -621,11 +618,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.listDatasets(request, options, callback);
   }
@@ -686,7 +682,7 @@ class DataLabelingServiceClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Deletes a dataset by resource name.
@@ -726,11 +722,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.deleteDataset(request, options, callback);
   }
@@ -851,11 +846,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.importData(request, options, callback);
   }
@@ -986,11 +980,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.exportData(request, options, callback);
   }
@@ -1042,11 +1035,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.getDataItem(request, options, callback);
   }
@@ -1148,11 +1140,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.listDataItems(request, options, callback);
   }
@@ -1213,7 +1204,7 @@ class DataLabelingServiceClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Gets an annotated dataset by resource name.
@@ -1262,11 +1253,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.getAnnotatedDataset(request, options, callback);
   }
@@ -1367,17 +1357,12 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
-    return this._innerApiCalls.listAnnotatedDatasets(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.listAnnotatedDatasets(request, options, callback);
   }
 
   /**
@@ -1436,7 +1421,7 @@ class DataLabelingServiceClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Starts a labeling task for image. The type of image labeling task is
@@ -1582,11 +1567,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.labelImage(request, options, callback);
   }
@@ -1735,11 +1719,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.labelVideo(request, options, callback);
   }
@@ -1876,11 +1859,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.labelText(request, options, callback);
   }
@@ -1936,11 +1918,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.getExample(request, options, callback);
   }
@@ -2043,11 +2024,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.listExamples(request, options, callback);
   }
@@ -2110,7 +2090,7 @@ class DataLabelingServiceClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Creates an annotation spec set by providing a set of labels.
@@ -2169,17 +2149,12 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
-    return this._innerApiCalls.createAnnotationSpecSet(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.createAnnotationSpecSet(request, options, callback);
   }
 
   /**
@@ -2228,11 +2203,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.getAnnotationSpecSet(request, options, callback);
   }
@@ -2333,17 +2307,12 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
-    return this._innerApiCalls.listAnnotationSpecSets(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.listAnnotationSpecSets(request, options, callback);
   }
 
   /**
@@ -2402,7 +2371,7 @@ class DataLabelingServiceClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Deletes an annotation spec set by resource name.
@@ -2442,17 +2411,12 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
-    return this._innerApiCalls.deleteAnnotationSpecSet(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.deleteAnnotationSpecSet(request, options, callback);
   }
 
   /**
@@ -2564,11 +2528,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.createInstruction(request, options, callback);
   }
@@ -2619,11 +2582,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.getInstruction(request, options, callback);
   }
@@ -2724,11 +2686,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.listInstructions(request, options, callback);
   }
@@ -2789,7 +2750,7 @@ class DataLabelingServiceClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Deletes an instruction object by resource name.
@@ -2829,11 +2790,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.deleteInstruction(request, options, callback);
   }
@@ -2884,11 +2844,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.getEvaluation(request, options, callback);
   }
@@ -3005,11 +2964,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.searchEvaluations(request, options, callback);
   }
@@ -3080,7 +3038,7 @@ class DataLabelingServiceClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Searchs example comparisons in evaluation, in format of examples
@@ -3179,17 +3137,12 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
-    return this._innerApiCalls.searchExampleComparisons(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.searchExampleComparisons(request, options, callback);
   }
 
   /**
@@ -3247,7 +3200,7 @@ class DataLabelingServiceClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Creates an evaluation job.
@@ -3304,11 +3257,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.createEvaluationJob(request, options, callback);
   }
@@ -3369,11 +3321,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      'evaluation_job.name': request.evaluationJob.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'evaluation_job.name': request.evaluationJob.name
+      });
 
     return this._innerApiCalls.updateEvaluationJob(request, options, callback);
   }
@@ -3424,11 +3375,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.getEvaluationJob(request, options, callback);
   }
@@ -3472,11 +3422,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.pauseEvaluationJob(request, options, callback);
   }
@@ -3520,11 +3469,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.resumeEvaluationJob(request, options, callback);
   }
@@ -3567,11 +3515,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
     return this._innerApiCalls.deleteEvaluationJob(request, options, callback);
   }
@@ -3685,11 +3632,10 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      parent: request.parent,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'parent': request.parent
+      });
 
     return this._innerApiCalls.listEvaluationJobs(request, options, callback);
   }
@@ -3757,7 +3703,7 @@ class DataLabelingServiceClient {
       request,
       options
     );
-  }
+  };
 
   /**
    * Deletes an annotated dataset by resource name.
@@ -3798,17 +3744,12 @@ class DataLabelingServiceClient {
     options = options || {};
     options.otherArgs = options.otherArgs || {};
     options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
+    options.otherArgs.headers['x-goog-request-params'] =
+      gax.routingHeader.fromParams({
+        'name': request.name
+      });
 
-    return this._innerApiCalls.deleteAnnotatedDataset(
-      request,
-      options,
-      callback
-    );
+    return this._innerApiCalls.deleteAnnotatedDataset(request, options, callback);
   }
 
   // --------------------
@@ -3957,9 +3898,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromAnnotatedDatasetName(annotatedDatasetName) {
-    return this._pathTemplates.annotatedDatasetPathTemplate.match(
-      annotatedDatasetName
-    ).project;
+    return this._pathTemplates.annotatedDatasetPathTemplate
+      .match(annotatedDatasetName)
+      .project;
   }
 
   /**
@@ -3970,9 +3911,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the dataset.
    */
   matchDatasetFromAnnotatedDatasetName(annotatedDatasetName) {
-    return this._pathTemplates.annotatedDatasetPathTemplate.match(
-      annotatedDatasetName
-    ).dataset;
+    return this._pathTemplates.annotatedDatasetPathTemplate
+      .match(annotatedDatasetName)
+      .dataset;
   }
 
   /**
@@ -3983,9 +3924,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the annotated_dataset.
    */
   matchAnnotatedDatasetFromAnnotatedDatasetName(annotatedDatasetName) {
-    return this._pathTemplates.annotatedDatasetPathTemplate.match(
-      annotatedDatasetName
-    ).annotated_dataset;
+    return this._pathTemplates.annotatedDatasetPathTemplate
+      .match(annotatedDatasetName)
+      .annotated_dataset;
   }
 
   /**
@@ -3996,9 +3937,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromAnnotationSpecSetName(annotationSpecSetName) {
-    return this._pathTemplates.annotationSpecSetPathTemplate.match(
-      annotationSpecSetName
-    ).project;
+    return this._pathTemplates.annotationSpecSetPathTemplate
+      .match(annotationSpecSetName)
+      .project;
   }
 
   /**
@@ -4009,9 +3950,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the annotation_spec_set.
    */
   matchAnnotationSpecSetFromAnnotationSpecSetName(annotationSpecSetName) {
-    return this._pathTemplates.annotationSpecSetPathTemplate.match(
-      annotationSpecSetName
-    ).annotation_spec_set;
+    return this._pathTemplates.annotationSpecSetPathTemplate
+      .match(annotationSpecSetName)
+      .annotation_spec_set;
   }
 
   /**
@@ -4022,7 +3963,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromDataItemName(dataItemName) {
-    return this._pathTemplates.dataItemPathTemplate.match(dataItemName).project;
+    return this._pathTemplates.dataItemPathTemplate
+      .match(dataItemName)
+      .project;
   }
 
   /**
@@ -4033,7 +3976,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the dataset.
    */
   matchDatasetFromDataItemName(dataItemName) {
-    return this._pathTemplates.dataItemPathTemplate.match(dataItemName).dataset;
+    return this._pathTemplates.dataItemPathTemplate
+      .match(dataItemName)
+      .dataset;
   }
 
   /**
@@ -4044,7 +3989,8 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the data_item.
    */
   matchDataItemFromDataItemName(dataItemName) {
-    return this._pathTemplates.dataItemPathTemplate.match(dataItemName)
+    return this._pathTemplates.dataItemPathTemplate
+      .match(dataItemName)
       .data_item;
   }
 
@@ -4056,7 +4002,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromDatasetName(datasetName) {
-    return this._pathTemplates.datasetPathTemplate.match(datasetName).project;
+    return this._pathTemplates.datasetPathTemplate
+      .match(datasetName)
+      .project;
   }
 
   /**
@@ -4067,7 +4015,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the dataset.
    */
   matchDatasetFromDatasetName(datasetName) {
-    return this._pathTemplates.datasetPathTemplate.match(datasetName).dataset;
+    return this._pathTemplates.datasetPathTemplate
+      .match(datasetName)
+      .dataset;
   }
 
   /**
@@ -4078,7 +4028,8 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromEvaluationName(evaluationName) {
-    return this._pathTemplates.evaluationPathTemplate.match(evaluationName)
+    return this._pathTemplates.evaluationPathTemplate
+      .match(evaluationName)
       .project;
   }
 
@@ -4090,7 +4041,8 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the dataset.
    */
   matchDatasetFromEvaluationName(evaluationName) {
-    return this._pathTemplates.evaluationPathTemplate.match(evaluationName)
+    return this._pathTemplates.evaluationPathTemplate
+      .match(evaluationName)
       .dataset;
   }
 
@@ -4102,7 +4054,8 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the evaluation.
    */
   matchEvaluationFromEvaluationName(evaluationName) {
-    return this._pathTemplates.evaluationPathTemplate.match(evaluationName)
+    return this._pathTemplates.evaluationPathTemplate
+      .match(evaluationName)
       .evaluation;
   }
 
@@ -4114,9 +4067,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromEvaluationJobName(evaluationJobName) {
-    return this._pathTemplates.evaluationJobPathTemplate.match(
-      evaluationJobName
-    ).project;
+    return this._pathTemplates.evaluationJobPathTemplate
+      .match(evaluationJobName)
+      .project;
   }
 
   /**
@@ -4127,9 +4080,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the evaluation_job.
    */
   matchEvaluationJobFromEvaluationJobName(evaluationJobName) {
-    return this._pathTemplates.evaluationJobPathTemplate.match(
-      evaluationJobName
-    ).evaluation_job;
+    return this._pathTemplates.evaluationJobPathTemplate
+      .match(evaluationJobName)
+      .evaluation_job;
   }
 
   /**
@@ -4140,7 +4093,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromExampleName(exampleName) {
-    return this._pathTemplates.examplePathTemplate.match(exampleName).project;
+    return this._pathTemplates.examplePathTemplate
+      .match(exampleName)
+      .project;
   }
 
   /**
@@ -4151,7 +4106,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the dataset.
    */
   matchDatasetFromExampleName(exampleName) {
-    return this._pathTemplates.examplePathTemplate.match(exampleName).dataset;
+    return this._pathTemplates.examplePathTemplate
+      .match(exampleName)
+      .dataset;
   }
 
   /**
@@ -4162,7 +4119,8 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the annotated_dataset.
    */
   matchAnnotatedDatasetFromExampleName(exampleName) {
-    return this._pathTemplates.examplePathTemplate.match(exampleName)
+    return this._pathTemplates.examplePathTemplate
+      .match(exampleName)
       .annotated_dataset;
   }
 
@@ -4174,7 +4132,9 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the example.
    */
   matchExampleFromExampleName(exampleName) {
-    return this._pathTemplates.examplePathTemplate.match(exampleName).example;
+    return this._pathTemplates.examplePathTemplate
+      .match(exampleName)
+      .example;
   }
 
   /**
@@ -4185,7 +4145,8 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromInstructionName(instructionName) {
-    return this._pathTemplates.instructionPathTemplate.match(instructionName)
+    return this._pathTemplates.instructionPathTemplate
+      .match(instructionName)
       .project;
   }
 
@@ -4197,7 +4158,8 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the instruction.
    */
   matchInstructionFromInstructionName(instructionName) {
-    return this._pathTemplates.instructionPathTemplate.match(instructionName)
+    return this._pathTemplates.instructionPathTemplate
+      .match(instructionName)
       .instruction;
   }
 
@@ -4209,8 +4171,11 @@ class DataLabelingServiceClient {
    * @returns {String} - A string representing the project.
    */
   matchProjectFromProjectName(projectName) {
-    return this._pathTemplates.projectPathTemplate.match(projectName).project;
+    return this._pathTemplates.projectPathTemplate
+      .match(projectName)
+      .project;
   }
 }
+
 
 module.exports = DataLabelingServiceClient;
