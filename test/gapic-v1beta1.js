@@ -24,14 +24,12 @@ error.code = FAKE_STATUS_CODE;
 
 describe('DataLabelingServiceClient', () => {
   it('has servicePath', () => {
-    const servicePath =
-      datalabelingModule.v1beta1.DataLabelingServiceClient.servicePath;
+    const servicePath = datalabelingModule.v1beta1.DataLabelingServiceClient.servicePath;
     assert(servicePath);
   });
 
   it('has apiEndpoint', () => {
-    const apiEndpoint =
-      datalabelingModule.v1beta1.DataLabelingServiceClient.apiEndpoint;
+    const apiEndpoint = datalabelingModule.v1beta1.DataLabelingServiceClient.apiEndpoint;
     assert(apiEndpoint);
   });
 
@@ -47,9 +45,7 @@ describe('DataLabelingServiceClient', () => {
   });
 
   it('should create a client with gRPC fallback', () => {
-    const client = new datalabelingModule.v1beta1.DataLabelingServiceClient({
-      fallback: true,
-    });
+    const client = new datalabelingModule.v1beta1.DataLabelingServiceClient({fallback: true});
     assert(client);
   });
 
@@ -212,11 +208,7 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listDatasets = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listDatasets = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.datasets);
       };
@@ -331,24 +323,17 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.importData = mockLongRunningGrpcMethod(
-        request,
-        expectedResponse
-      );
+      client._innerApiCalls.importData = mockLongRunningGrpcMethod(request, expectedResponse);
 
-      client
-        .importData(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(responses => {
-          assert.deepStrictEqual(responses[0], expectedResponse);
-          done();
-        })
-        .catch(err => {
-          done(err);
-        });
+      client.importData(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(responses => {
+        assert.deepStrictEqual(responses[0], expectedResponse);
+        done();
+      }).catch(err => {
+        done(err);
+      });
     });
 
     it('invokes importData with error', done => {
@@ -366,26 +351,18 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.importData = mockLongRunningGrpcMethod(
-        request,
-        null,
-        error
-      );
+      client._innerApiCalls.importData = mockLongRunningGrpcMethod(request, null, error);
 
-      client
-        .importData(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(() => {
-          assert.fail();
-        })
-        .catch(err => {
-          assert(err instanceof Error);
-          assert.strictEqual(err.code, FAKE_STATUS_CODE);
-          done();
-        });
+      client.importData(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(() => {
+        assert.fail();
+      }).catch(err => {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
+        done();
+      });
     });
 
     it('has longrunning decoder functions', () => {
@@ -393,14 +370,8 @@ describe('DataLabelingServiceClient', () => {
         credentials: {client_email: 'bogus', private_key: 'bogus'},
         projectId: 'bogus',
       });
-      assert(
-        client._descriptors.longrunning.importData.responseDecoder instanceof
-          Function
-      );
-      assert(
-        client._descriptors.longrunning.importData.metadataDecoder instanceof
-          Function
-      );
+      assert(client._descriptors.longrunning.importData.responseDecoder instanceof Function);
+      assert(client._descriptors.longrunning.importData.metadataDecoder instanceof Function);
     });
   });
 
@@ -432,24 +403,17 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.exportData = mockLongRunningGrpcMethod(
-        request,
-        expectedResponse
-      );
+      client._innerApiCalls.exportData = mockLongRunningGrpcMethod(request, expectedResponse);
 
-      client
-        .exportData(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(responses => {
-          assert.deepStrictEqual(responses[0], expectedResponse);
-          done();
-        })
-        .catch(err => {
-          done(err);
-        });
+      client.exportData(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(responses => {
+        assert.deepStrictEqual(responses[0], expectedResponse);
+        done();
+      }).catch(err => {
+        done(err);
+      });
     });
 
     it('invokes exportData with error', done => {
@@ -469,26 +433,18 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.exportData = mockLongRunningGrpcMethod(
-        request,
-        null,
-        error
-      );
+      client._innerApiCalls.exportData = mockLongRunningGrpcMethod(request, null, error);
 
-      client
-        .exportData(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(() => {
-          assert.fail();
-        })
-        .catch(err => {
-          assert(err instanceof Error);
-          assert.strictEqual(err.code, FAKE_STATUS_CODE);
-          done();
-        });
+      client.exportData(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(() => {
+        assert.fail();
+      }).catch(err => {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
+        done();
+      });
     });
 
     it('has longrunning decoder functions', () => {
@@ -496,14 +452,8 @@ describe('DataLabelingServiceClient', () => {
         credentials: {client_email: 'bogus', private_key: 'bogus'},
         projectId: 'bogus',
       });
-      assert(
-        client._descriptors.longrunning.exportData.responseDecoder instanceof
-          Function
-      );
-      assert(
-        client._descriptors.longrunning.exportData.metadataDecoder instanceof
-          Function
-      );
+      assert(client._descriptors.longrunning.exportData.responseDecoder instanceof Function);
+      assert(client._descriptors.longrunning.exportData.metadataDecoder instanceof Function);
     });
   });
 
@@ -515,11 +465,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.dataItemPath(
-        '[PROJECT]',
-        '[DATASET]',
-        '[DATA_ITEM]'
-      );
+      const formattedName = client.dataItemPath('[PROJECT]', '[DATASET]', '[DATA_ITEM]');
       const request = {
         name: formattedName,
       };
@@ -550,11 +496,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.dataItemPath(
-        '[PROJECT]',
-        '[DATASET]',
-        '[DATA_ITEM]'
-      );
+      const formattedName = client.dataItemPath('[PROJECT]', '[DATASET]', '[DATA_ITEM]');
       const request = {
         name: formattedName,
       };
@@ -598,11 +540,7 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listDataItems = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listDataItems = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.dataItems);
       };
@@ -650,11 +588,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.annotatedDatasetPath(
-        '[PROJECT]',
-        '[DATASET]',
-        '[ANNOTATED_DATASET]'
-      );
+      const formattedName = client.annotatedDatasetPath('[PROJECT]', '[DATASET]', '[ANNOTATED_DATASET]');
       const request = {
         name: formattedName,
       };
@@ -693,11 +627,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.annotatedDatasetPath(
-        '[PROJECT]',
-        '[DATASET]',
-        '[ANNOTATED_DATASET]'
-      );
+      const formattedName = client.annotatedDatasetPath('[PROJECT]', '[DATASET]', '[ANNOTATED_DATASET]');
       const request = {
         name: formattedName,
       };
@@ -741,11 +671,7 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listAnnotatedDatasets = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listAnnotatedDatasets = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.annotatedDatasets);
       };
@@ -817,24 +743,17 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.labelImage = mockLongRunningGrpcMethod(
-        request,
-        expectedResponse
-      );
+      client._innerApiCalls.labelImage = mockLongRunningGrpcMethod(request, expectedResponse);
 
-      client
-        .labelImage(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(responses => {
-          assert.deepStrictEqual(responses[0], expectedResponse);
-          done();
-        })
-        .catch(err => {
-          done(err);
-        });
+      client.labelImage(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(responses => {
+        assert.deepStrictEqual(responses[0], expectedResponse);
+        done();
+      }).catch(err => {
+        done(err);
+      });
     });
 
     it('invokes labelImage with error', done => {
@@ -854,26 +773,18 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.labelImage = mockLongRunningGrpcMethod(
-        request,
-        null,
-        error
-      );
+      client._innerApiCalls.labelImage = mockLongRunningGrpcMethod(request, null, error);
 
-      client
-        .labelImage(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(() => {
-          assert.fail();
-        })
-        .catch(err => {
-          assert(err instanceof Error);
-          assert.strictEqual(err.code, FAKE_STATUS_CODE);
-          done();
-        });
+      client.labelImage(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(() => {
+        assert.fail();
+      }).catch(err => {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
+        done();
+      });
     });
 
     it('has longrunning decoder functions', () => {
@@ -881,14 +792,8 @@ describe('DataLabelingServiceClient', () => {
         credentials: {client_email: 'bogus', private_key: 'bogus'},
         projectId: 'bogus',
       });
-      assert(
-        client._descriptors.longrunning.labelImage.responseDecoder instanceof
-          Function
-      );
-      assert(
-        client._descriptors.longrunning.labelImage.metadataDecoder instanceof
-          Function
-      );
+      assert(client._descriptors.longrunning.labelImage.responseDecoder instanceof Function);
+      assert(client._descriptors.longrunning.labelImage.metadataDecoder instanceof Function);
     });
   });
 
@@ -924,24 +829,17 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.labelVideo = mockLongRunningGrpcMethod(
-        request,
-        expectedResponse
-      );
+      client._innerApiCalls.labelVideo = mockLongRunningGrpcMethod(request, expectedResponse);
 
-      client
-        .labelVideo(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(responses => {
-          assert.deepStrictEqual(responses[0], expectedResponse);
-          done();
-        })
-        .catch(err => {
-          done(err);
-        });
+      client.labelVideo(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(responses => {
+        assert.deepStrictEqual(responses[0], expectedResponse);
+        done();
+      }).catch(err => {
+        done(err);
+      });
     });
 
     it('invokes labelVideo with error', done => {
@@ -961,26 +859,18 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.labelVideo = mockLongRunningGrpcMethod(
-        request,
-        null,
-        error
-      );
+      client._innerApiCalls.labelVideo = mockLongRunningGrpcMethod(request, null, error);
 
-      client
-        .labelVideo(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(() => {
-          assert.fail();
-        })
-        .catch(err => {
-          assert(err instanceof Error);
-          assert.strictEqual(err.code, FAKE_STATUS_CODE);
-          done();
-        });
+      client.labelVideo(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(() => {
+        assert.fail();
+      }).catch(err => {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
+        done();
+      });
     });
 
     it('has longrunning decoder functions', () => {
@@ -988,14 +878,8 @@ describe('DataLabelingServiceClient', () => {
         credentials: {client_email: 'bogus', private_key: 'bogus'},
         projectId: 'bogus',
       });
-      assert(
-        client._descriptors.longrunning.labelVideo.responseDecoder instanceof
-          Function
-      );
-      assert(
-        client._descriptors.longrunning.labelVideo.metadataDecoder instanceof
-          Function
-      );
+      assert(client._descriptors.longrunning.labelVideo.responseDecoder instanceof Function);
+      assert(client._descriptors.longrunning.labelVideo.metadataDecoder instanceof Function);
     });
   });
 
@@ -1031,24 +915,17 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.labelText = mockLongRunningGrpcMethod(
-        request,
-        expectedResponse
-      );
+      client._innerApiCalls.labelText = mockLongRunningGrpcMethod(request, expectedResponse);
 
-      client
-        .labelText(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(responses => {
-          assert.deepStrictEqual(responses[0], expectedResponse);
-          done();
-        })
-        .catch(err => {
-          done(err);
-        });
+      client.labelText(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(responses => {
+        assert.deepStrictEqual(responses[0], expectedResponse);
+        done();
+      }).catch(err => {
+        done(err);
+      });
     });
 
     it('invokes labelText with error', done => {
@@ -1068,26 +945,18 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.labelText = mockLongRunningGrpcMethod(
-        request,
-        null,
-        error
-      );
+      client._innerApiCalls.labelText = mockLongRunningGrpcMethod(request, null, error);
 
-      client
-        .labelText(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(() => {
-          assert.fail();
-        })
-        .catch(err => {
-          assert(err instanceof Error);
-          assert.strictEqual(err.code, FAKE_STATUS_CODE);
-          done();
-        });
+      client.labelText(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(() => {
+        assert.fail();
+      }).catch(err => {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
+        done();
+      });
     });
 
     it('has longrunning decoder functions', () => {
@@ -1095,14 +964,8 @@ describe('DataLabelingServiceClient', () => {
         credentials: {client_email: 'bogus', private_key: 'bogus'},
         projectId: 'bogus',
       });
-      assert(
-        client._descriptors.longrunning.labelText.responseDecoder instanceof
-          Function
-      );
-      assert(
-        client._descriptors.longrunning.labelText.metadataDecoder instanceof
-          Function
-      );
+      assert(client._descriptors.longrunning.labelText.responseDecoder instanceof Function);
+      assert(client._descriptors.longrunning.labelText.metadataDecoder instanceof Function);
     });
   });
 
@@ -1114,12 +977,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.examplePath(
-        '[PROJECT]',
-        '[DATASET]',
-        '[ANNOTATED_DATASET]',
-        '[EXAMPLE]'
-      );
+      const formattedName = client.examplePath('[PROJECT]', '[DATASET]', '[ANNOTATED_DATASET]', '[EXAMPLE]');
       const request = {
         name: formattedName,
       };
@@ -1150,12 +1008,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.examplePath(
-        '[PROJECT]',
-        '[DATASET]',
-        '[ANNOTATED_DATASET]',
-        '[EXAMPLE]'
-      );
+      const formattedName = client.examplePath('[PROJECT]', '[DATASET]', '[ANNOTATED_DATASET]', '[EXAMPLE]');
       const request = {
         name: formattedName,
       };
@@ -1184,11 +1037,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedParent = client.annotatedDatasetPath(
-        '[PROJECT]',
-        '[DATASET]',
-        '[ANNOTATED_DATASET]'
-      );
+      const formattedParent = client.annotatedDatasetPath('[PROJECT]', '[DATASET]', '[ANNOTATED_DATASET]');
       const request = {
         parent: formattedParent,
       };
@@ -1203,11 +1052,7 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listExamples = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listExamples = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.examples);
       };
@@ -1226,11 +1071,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedParent = client.annotatedDatasetPath(
-        '[PROJECT]',
-        '[DATASET]',
-        '[ANNOTATED_DATASET]'
-      );
+      const formattedParent = client.annotatedDatasetPath('[PROJECT]', '[DATASET]', '[ANNOTATED_DATASET]');
       const request = {
         parent: formattedParent,
       };
@@ -1327,10 +1168,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.annotationSpecSetPath(
-        '[PROJECT]',
-        '[ANNOTATION_SPEC_SET]'
-      );
+      const formattedName = client.annotationSpecSetPath('[PROJECT]', '[ANNOTATION_SPEC_SET]');
       const request = {
         name: formattedName,
       };
@@ -1365,10 +1203,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.annotationSpecSetPath(
-        '[PROJECT]',
-        '[ANNOTATION_SPEC_SET]'
-      );
+      const formattedName = client.annotationSpecSetPath('[PROJECT]', '[ANNOTATION_SPEC_SET]');
       const request = {
         name: formattedName,
       };
@@ -1412,11 +1247,7 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listAnnotationSpecSets = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listAnnotationSpecSets = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.annotationSpecSets);
       };
@@ -1464,18 +1295,13 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.annotationSpecSetPath(
-        '[PROJECT]',
-        '[ANNOTATION_SPEC_SET]'
-      );
+      const formattedName = client.annotationSpecSetPath('[PROJECT]', '[ANNOTATION_SPEC_SET]');
       const request = {
         name: formattedName,
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.deleteAnnotationSpecSet = mockSimpleGrpcMethod(
-        request
-      );
+      client._innerApiCalls.deleteAnnotationSpecSet = mockSimpleGrpcMethod(request);
 
       client.deleteAnnotationSpecSet(request, err => {
         assert.ifError(err);
@@ -1490,10 +1316,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.annotationSpecSetPath(
-        '[PROJECT]',
-        '[ANNOTATION_SPEC_SET]'
-      );
+      const formattedName = client.annotationSpecSetPath('[PROJECT]', '[ANNOTATION_SPEC_SET]');
       const request = {
         name: formattedName,
       };
@@ -1539,24 +1362,17 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.createInstruction = mockLongRunningGrpcMethod(
-        request,
-        expectedResponse
-      );
+      client._innerApiCalls.createInstruction = mockLongRunningGrpcMethod(request, expectedResponse);
 
-      client
-        .createInstruction(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(responses => {
-          assert.deepStrictEqual(responses[0], expectedResponse);
-          done();
-        })
-        .catch(err => {
-          done(err);
-        });
+      client.createInstruction(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(responses => {
+        assert.deepStrictEqual(responses[0], expectedResponse);
+        done();
+      }).catch(err => {
+        done(err);
+      });
     });
 
     it('invokes createInstruction with error', done => {
@@ -1574,26 +1390,18 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.createInstruction = mockLongRunningGrpcMethod(
-        request,
-        null,
-        error
-      );
+      client._innerApiCalls.createInstruction = mockLongRunningGrpcMethod(request, null, error);
 
-      client
-        .createInstruction(request)
-        .then(responses => {
-          const operation = responses[0];
-          return operation.promise();
-        })
-        .then(() => {
-          assert.fail();
-        })
-        .catch(err => {
-          assert(err instanceof Error);
-          assert.strictEqual(err.code, FAKE_STATUS_CODE);
-          done();
-        });
+      client.createInstruction(request).then(responses => {
+        const operation = responses[0];
+        return operation.promise();
+      }).then(() => {
+        assert.fail();
+      }).catch(err => {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
+        done();
+      });
     });
 
     it('has longrunning decoder functions', () => {
@@ -1601,14 +1409,8 @@ describe('DataLabelingServiceClient', () => {
         credentials: {client_email: 'bogus', private_key: 'bogus'},
         projectId: 'bogus',
       });
-      assert(
-        client._descriptors.longrunning.createInstruction
-          .responseDecoder instanceof Function
-      );
-      assert(
-        client._descriptors.longrunning.createInstruction
-          .metadataDecoder instanceof Function
-      );
+      assert(client._descriptors.longrunning.createInstruction.responseDecoder instanceof Function);
+      assert(client._descriptors.longrunning.createInstruction.metadataDecoder instanceof Function);
     });
   });
 
@@ -1620,10 +1422,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.instructionPath(
-        '[PROJECT]',
-        '[INSTRUCTION]'
-      );
+      const formattedName = client.instructionPath('[PROJECT]', '[INSTRUCTION]');
       const request = {
         name: formattedName,
       };
@@ -1658,10 +1457,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.instructionPath(
-        '[PROJECT]',
-        '[INSTRUCTION]'
-      );
+      const formattedName = client.instructionPath('[PROJECT]', '[INSTRUCTION]');
       const request = {
         name: formattedName,
       };
@@ -1705,11 +1501,7 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listInstructions = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listInstructions = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.instructions);
       };
@@ -1757,10 +1549,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.instructionPath(
-        '[PROJECT]',
-        '[INSTRUCTION]'
-      );
+      const formattedName = client.instructionPath('[PROJECT]', '[INSTRUCTION]');
       const request = {
         name: formattedName,
       };
@@ -1781,10 +1570,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.instructionPath(
-        '[PROJECT]',
-        '[INSTRUCTION]'
-      );
+      const formattedName = client.instructionPath('[PROJECT]', '[INSTRUCTION]');
       const request = {
         name: formattedName,
       };
@@ -1812,11 +1598,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.evaluationPath(
-        '[PROJECT]',
-        '[DATASET]',
-        '[EVALUATION]'
-      );
+      const formattedName = client.evaluationPath('[PROJECT]', '[DATASET]', '[EVALUATION]');
       const request = {
         name: formattedName,
       };
@@ -1849,11 +1631,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.evaluationPath(
-        '[PROJECT]',
-        '[DATASET]',
-        '[EVALUATION]'
-      );
+      const formattedName = client.evaluationPath('[PROJECT]', '[DATASET]', '[EVALUATION]');
       const request = {
         name: formattedName,
       };
@@ -1899,11 +1677,7 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.searchEvaluations = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.searchEvaluations = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.evaluations);
       };
@@ -1953,11 +1727,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedParent = client.evaluationPath(
-        '[PROJECT]',
-        '[DATASET]',
-        '[EVALUATION]'
-      );
+      const formattedParent = client.evaluationPath('[PROJECT]', '[DATASET]', '[EVALUATION]');
       const request = {
         parent: formattedParent,
       };
@@ -1972,11 +1742,7 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.searchExampleComparisons = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.searchExampleComparisons = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.exampleComparisons);
       };
@@ -1995,11 +1761,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedParent = client.evaluationPath(
-        '[PROJECT]',
-        '[DATASET]',
-        '[EVALUATION]'
-      );
+      const formattedParent = client.evaluationPath('[PROJECT]', '[DATASET]', '[EVALUATION]');
       const request = {
         parent: formattedParent,
       };
@@ -2176,10 +1938,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.evaluationJobPath(
-        '[PROJECT]',
-        '[EVALUATION_JOB]'
-      );
+      const formattedName = client.evaluationJobPath('[PROJECT]', '[EVALUATION_JOB]');
       const request = {
         name: formattedName,
       };
@@ -2220,10 +1979,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.evaluationJobPath(
-        '[PROJECT]',
-        '[EVALUATION_JOB]'
-      );
+      const formattedName = client.evaluationJobPath('[PROJECT]', '[EVALUATION_JOB]');
       const request = {
         name: formattedName,
       };
@@ -2252,10 +2008,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.evaluationJobPath(
-        '[PROJECT]',
-        '[EVALUATION_JOB]'
-      );
+      const formattedName = client.evaluationJobPath('[PROJECT]', '[EVALUATION_JOB]');
       const request = {
         name: formattedName,
       };
@@ -2276,10 +2029,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.evaluationJobPath(
-        '[PROJECT]',
-        '[EVALUATION_JOB]'
-      );
+      const formattedName = client.evaluationJobPath('[PROJECT]', '[EVALUATION_JOB]');
       const request = {
         name: formattedName,
       };
@@ -2307,10 +2057,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.evaluationJobPath(
-        '[PROJECT]',
-        '[EVALUATION_JOB]'
-      );
+      const formattedName = client.evaluationJobPath('[PROJECT]', '[EVALUATION_JOB]');
       const request = {
         name: formattedName,
       };
@@ -2331,10 +2078,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.evaluationJobPath(
-        '[PROJECT]',
-        '[EVALUATION_JOB]'
-      );
+      const formattedName = client.evaluationJobPath('[PROJECT]', '[EVALUATION_JOB]');
       const request = {
         name: formattedName,
       };
@@ -2362,10 +2106,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.evaluationJobPath(
-        '[PROJECT]',
-        '[EVALUATION_JOB]'
-      );
+      const formattedName = client.evaluationJobPath('[PROJECT]', '[EVALUATION_JOB]');
       const request = {
         name: formattedName,
       };
@@ -2386,10 +2127,7 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedName = client.evaluationJobPath(
-        '[PROJECT]',
-        '[EVALUATION_JOB]'
-      );
+      const formattedName = client.evaluationJobPath('[PROJECT]', '[EVALUATION_JOB]');
       const request = {
         name: formattedName,
       };
@@ -2434,11 +2172,7 @@ describe('DataLabelingServiceClient', () => {
       };
 
       // Mock Grpc layer
-      client._innerApiCalls.listEvaluationJobs = (
-        actualRequest,
-        options,
-        callback
-      ) => {
+      client._innerApiCalls.listEvaluationJobs = (actualRequest, options, callback) => {
         assert.deepStrictEqual(actualRequest, request);
         callback(null, expectedResponse.evaluationJobs);
       };
@@ -2491,9 +2225,7 @@ describe('DataLabelingServiceClient', () => {
       const request = {};
 
       // Mock Grpc layer
-      client._innerApiCalls.deleteAnnotatedDataset = mockSimpleGrpcMethod(
-        request
-      );
+      client._innerApiCalls.deleteAnnotatedDataset = mockSimpleGrpcMethod(request);
 
       client.deleteAnnotatedDataset(request, err => {
         assert.ifError(err);
@@ -2524,6 +2256,7 @@ describe('DataLabelingServiceClient', () => {
       });
     });
   });
+
 });
 
 function mockSimpleGrpcMethod(expectedRequest, response, error) {
@@ -2547,11 +2280,12 @@ function mockLongRunningGrpcMethod(expectedRequest, response, error) {
         return new Promise((resolve, reject) => {
           if (error) {
             reject(error);
-          } else {
+          }
+          else {
             resolve([response]);
           }
         });
-      },
+      }
     };
     return Promise.resolve([mockOperation]);
   };
