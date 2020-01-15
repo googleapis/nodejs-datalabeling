@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -320,6 +320,7 @@ class DataLabelingServiceClient {
       'listDataItems',
       'getAnnotatedDataset',
       'listAnnotatedDatasets',
+      'deleteAnnotatedDataset',
       'labelImage',
       'labelVideo',
       'labelText',
@@ -343,7 +344,6 @@ class DataLabelingServiceClient {
       'resumeEvaluationJob',
       'deleteEvaluationJob',
       'listEvaluationJobs',
-      'deleteAnnotatedDataset',
     ];
     for (const methodName of dataLabelingServiceStubMethods) {
       const innerCallPromise = dataLabelingServiceStub.then(
@@ -903,11 +903,11 @@ class DataLabelingServiceClient {
    * });
    *
    * const formattedName = client.datasetPath('[PROJECT]', '[DATASET]');
-   * const annotatedDataset = '';
+   * const formattedAnnotatedDataset = client.annotatedDatasetPath('[PROJECT]', '[DATASET]', '[ANNOTATED_DATASET]');
    * const outputConfig = {};
    * const request = {
    *   name: formattedName,
-   *   annotatedDataset: annotatedDataset,
+   *   annotatedDataset: formattedAnnotatedDataset,
    *   outputConfig: outputConfig,
    * };
    *
@@ -929,11 +929,11 @@ class DataLabelingServiceClient {
    *   });
    *
    * const formattedName = client.datasetPath('[PROJECT]', '[DATASET]');
-   * const annotatedDataset = '';
+   * const formattedAnnotatedDataset = client.annotatedDatasetPath('[PROJECT]', '[DATASET]', '[ANNOTATED_DATASET]');
    * const outputConfig = {};
    * const request = {
    *   name: formattedName,
-   *   annotatedDataset: annotatedDataset,
+   *   annotatedDataset: formattedAnnotatedDataset,
    *   outputConfig: outputConfig,
    * };
    *
@@ -964,11 +964,11 @@ class DataLabelingServiceClient {
    *   });
    *
    * const formattedName = client.datasetPath('[PROJECT]', '[DATASET]');
-   * const annotatedDataset = '';
+   * const formattedAnnotatedDataset = client.annotatedDatasetPath('[PROJECT]', '[DATASET]', '[ANNOTATED_DATASET]');
    * const outputConfig = {};
    * const request = {
    *   name: formattedName,
-   *   annotatedDataset: annotatedDataset,
+   *   annotatedDataset: formattedAnnotatedDataset,
    *   outputConfig: outputConfig,
    * };
    *
@@ -1435,6 +1435,58 @@ class DataLabelingServiceClient {
       this._innerApiCalls.listAnnotatedDatasets,
       request,
       options
+    );
+  }
+
+  /**
+   * Deletes an annotated dataset by resource name.
+   *
+   * @param {Object} request
+   *   The request object that will be sent.
+   * @param {string} request.name
+   *   Required. Name of the annotated dataset to delete, format:
+   *   projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
+   *   {annotated_dataset_id}
+   * @param {Object} [options]
+   *   Optional parameters. You can override the default settings for this call, e.g, timeout,
+   *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/interfaces/CallOptions.html} for the details.
+   * @param {function(?Error)} [callback]
+   *   The function which will be called with the result of the API call.
+   * @returns {Promise} - The promise which resolves when API call finishes.
+   *   The promise has a method named "cancel" which cancels the ongoing API call.
+   *
+   * @example
+   *
+   * const datalabeling = require('datalabeling.v1beta1');
+   *
+   * const client = new datalabeling.v1beta1.DataLabelingServiceClient({
+   *   // optional auth parameters.
+   * });
+   *
+   * const formattedName = client.annotatedDatasetPath('[PROJECT]', '[DATASET]', '[ANNOTATED_DATASET]');
+   * client.deleteAnnotatedDataset({name: formattedName}).catch(err => {
+   *   console.error(err);
+   * });
+   */
+  deleteAnnotatedDataset(request, options, callback) {
+    if (options instanceof Function && callback === undefined) {
+      callback = options;
+      options = {};
+    }
+    request = request || {};
+    options = options || {};
+    options.otherArgs = options.otherArgs || {};
+    options.otherArgs.headers = options.otherArgs.headers || {};
+    options.otherArgs.headers[
+      'x-goog-request-params'
+    ] = gax.routingHeader.fromParams({
+      name: request.name,
+    });
+
+    return this._innerApiCalls.deleteAnnotatedDataset(
+      request,
+      options,
+      callback
     );
   }
 
@@ -2839,13 +2891,15 @@ class DataLabelingServiceClient {
   }
 
   /**
-   * Gets an evaluation by resource name.
+   * Gets an evaluation by resource name (to search, use
+   * projects.evaluations.search).
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.name
    *   Required. Name of the evaluation. Format:
-   *   'projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}'
+   *
+   *   "projects/<var>{project_id}</var>/datasets/<var>{dataset_id}</var>/evaluations/<var>{evaluation_id}</var>'
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/interfaces/CallOptions.html} for the details.
@@ -2894,21 +2948,45 @@ class DataLabelingServiceClient {
   }
 
   /**
-   * Searchs evaluations within a project. Supported filter: evaluation_job,
-   * evaluation_time.
+   * Searches evaluations within a project.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. Evaluation search parent. Format:
-   *   projects/{project_id}
-   * @param {string} request.filter
-   *   Optional. Support filtering by model id, job state, start and end time.
-   *   Format:
-   *   "evaluation_job.evaluation_job_id = {evaluation_job_id} AND
-   *   evaluation_job.evaluation_job_run_time_start = {timestamp} AND
-   *   evaluation_job.evaluation_job_run_time_end = {timestamp} AND
-   *   annotation_spec.display_name = {display_name}"
+   *   Required. Evaluation search parent (project ID). Format:
+   *   "projects/<var>{project_id}</var>"
+   * @param {string} [request.filter]
+   *   Optional. To search evaluations, you can filter by the following:
+   *
+   *   * evaluation<span>_</span>job.evaluation_job_id (the last part of
+   *     EvaluationJob.name)
+   *   * evaluation<span>_</span>job.model_id (the <var>{model_name}</var> portion
+   *     of EvaluationJob.modelVersion)
+   *   * evaluation<span>_</span>job.evaluation_job_run_time_start (Minimum
+   *     threshold for the
+   *     evaluationJobRunTime that created
+   *     the evaluation)
+   *   * evaluation<span>_</span>job.evaluation_job_run_time_end (Maximum
+   *     threshold for the
+   *     evaluationJobRunTime that created
+   *     the evaluation)
+   *   * evaluation<span>_</span>job.job_state (EvaluationJob.state)
+   *   * annotation<span>_</span>spec.display_name (the Evaluation contains a
+   *     metric for the annotation spec with this
+   *     displayName)
+   *
+   *   To filter by multiple critiera, use the `AND` operator or the `OR`
+   *   operator. The following examples shows a string that filters by several
+   *   critiera:
+   *
+   *   "evaluation<span>_</span>job.evaluation_job_id =
+   *   <var>{evaluation_job_id}</var> AND evaluation<span>_</span>job.model_id =
+   *   <var>{model_name}</var> AND
+   *   evaluation<span>_</span>job.evaluation_job_run_time_start =
+   *   <var>{timestamp_1}</var> AND
+   *   evaluation<span>_</span>job.evaluation_job_run_time_end =
+   *   <var>{timestamp_2}</var> AND annotation<span>_</span>spec.display_name =
+   *   <var>{display_name}</var>"
    * @param {number} [request.pageSize]
    *   The maximum number of resources contained in the underlying API
    *   response. If page streaming is performed per-resource, this
@@ -2947,14 +3025,9 @@ class DataLabelingServiceClient {
    * });
    *
    * // Iterate over all elements.
-   * const formattedParent = client.projectPath('[PROJECT]');
-   * const filter = '';
-   * const request = {
-   *   parent: formattedParent,
-   *   filter: filter,
-   * };
+   * const formattedParent = client.evaluationPath('[PROJECT]', '[DATASET]', '[EVALUATION]');
    *
-   * client.searchEvaluations(request)
+   * client.searchEvaluations({parent: formattedParent})
    *   .then(responses => {
    *     const resources = responses[0];
    *     for (const resource of resources) {
@@ -2966,12 +3039,7 @@ class DataLabelingServiceClient {
    *   });
    *
    * // Or obtain the paged response.
-   * const formattedParent = client.projectPath('[PROJECT]');
-   * const filter = '';
-   * const request = {
-   *   parent: formattedParent,
-   *   filter: filter,
-   * };
+   * const formattedParent = client.evaluationPath('[PROJECT]', '[DATASET]', '[EVALUATION]');
    *
    *
    * const options = {autoPaginate: false};
@@ -2990,7 +3058,7 @@ class DataLabelingServiceClient {
    *     return client.searchEvaluations(nextRequest, options).then(callback);
    *   }
    * }
-   * client.searchEvaluations(request, options)
+   * client.searchEvaluations({parent: formattedParent}, options)
    *   .then(callback)
    *   .catch(err => {
    *     console.error(err);
@@ -3030,15 +3098,40 @@ class DataLabelingServiceClient {
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. Evaluation search parent. Format:
-   *   projects/{project_id}
-   * @param {string} request.filter
-   *   Optional. Support filtering by model id, job state, start and end time.
-   *   Format:
-   *   "evaluation_job.evaluation_job_id = {evaluation_job_id} AND
-   *   evaluation_job.evaluation_job_run_time_start = {timestamp} AND
-   *   evaluation_job.evaluation_job_run_time_end = {timestamp} AND
-   *   annotation_spec.display_name = {display_name}"
+   *   Required. Evaluation search parent (project ID). Format:
+   *   "projects/<var>{project_id}</var>"
+   * @param {string} [request.filter]
+   *   Optional. To search evaluations, you can filter by the following:
+   *
+   *   * evaluation<span>_</span>job.evaluation_job_id (the last part of
+   *     EvaluationJob.name)
+   *   * evaluation<span>_</span>job.model_id (the <var>{model_name}</var> portion
+   *     of EvaluationJob.modelVersion)
+   *   * evaluation<span>_</span>job.evaluation_job_run_time_start (Minimum
+   *     threshold for the
+   *     evaluationJobRunTime that created
+   *     the evaluation)
+   *   * evaluation<span>_</span>job.evaluation_job_run_time_end (Maximum
+   *     threshold for the
+   *     evaluationJobRunTime that created
+   *     the evaluation)
+   *   * evaluation<span>_</span>job.job_state (EvaluationJob.state)
+   *   * annotation<span>_</span>spec.display_name (the Evaluation contains a
+   *     metric for the annotation spec with this
+   *     displayName)
+   *
+   *   To filter by multiple critiera, use the `AND` operator or the `OR`
+   *   operator. The following examples shows a string that filters by several
+   *   critiera:
+   *
+   *   "evaluation<span>_</span>job.evaluation_job_id =
+   *   <var>{evaluation_job_id}</var> AND evaluation<span>_</span>job.model_id =
+   *   <var>{model_name}</var> AND
+   *   evaluation<span>_</span>job.evaluation_job_run_time_start =
+   *   <var>{timestamp_1}</var> AND
+   *   evaluation<span>_</span>job.evaluation_job_run_time_end =
+   *   <var>{timestamp_2}</var> AND annotation<span>_</span>spec.display_name =
+   *   <var>{display_name}</var>"
    * @param {number} [request.pageSize]
    *   The maximum number of resources contained in the underlying API
    *   response. If page streaming is performed per-resource, this
@@ -3059,13 +3152,8 @@ class DataLabelingServiceClient {
    *   // optional auth parameters.
    * });
    *
-   * const formattedParent = client.projectPath('[PROJECT]');
-   * const filter = '';
-   * const request = {
-   *   parent: formattedParent,
-   *   filter: filter,
-   * };
-   * client.searchEvaluationsStream(request)
+   * const formattedParent = client.evaluationPath('[PROJECT]', '[DATASET]', '[EVALUATION]');
+   * client.searchEvaluationsStream({parent: formattedParent})
    *   .on('data', element => {
    *     // doThingsWith(element)
    *   }).on('error', err => {
@@ -3083,16 +3171,17 @@ class DataLabelingServiceClient {
   }
 
   /**
-   * Searchs example comparisons in evaluation, in format of examples
-   * of both ground truth and prediction(s). It is represented as a search with
-   * evaluation id.
+   * Searches example comparisons from an evaluation. The return format is a
+   * list of example comparisons that show ground truth and prediction(s) for
+   * a single input. Search by providing an evaluation ID.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. Name of the Evaluation resource to search example comparison
-   *   from. Format:
-   *   projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}
+   *   Required. Name of the Evaluation resource to search for example
+   *   comparisons from. Format:
+   *
+   *   "projects/<var>{project_id}</var>/datasets/<var>{dataset_id}</var>/evaluations/<var>{evaluation_id}</var>"
    * @param {number} [request.pageSize]
    *   The maximum number of resources contained in the underlying API
    *   response. If page streaming is performed per-resource, this
@@ -3208,9 +3297,10 @@ class DataLabelingServiceClient {
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. Name of the Evaluation resource to search example comparison
-   *   from. Format:
-   *   projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}
+   *   Required. Name of the Evaluation resource to search for example
+   *   comparisons from. Format:
+   *
+   *   "projects/<var>{project_id}</var>/datasets/<var>{dataset_id}</var>/evaluations/<var>{evaluation_id}</var>"
    * @param {number} [request.pageSize]
    *   The maximum number of resources contained in the underlying API
    *   response. If page streaming is performed per-resource, this
@@ -3255,8 +3345,8 @@ class DataLabelingServiceClient {
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. Evaluation job resource parent, format:
-   *   projects/{project_id}.
+   *   Required. Evaluation job resource parent. Format:
+   *   "projects/<var>{project_id}</var>"
    * @param {Object} request.job
    *   Required. The evaluation job to create.
    *
@@ -3314,7 +3404,12 @@ class DataLabelingServiceClient {
   }
 
   /**
-   * Updates an evaluation job.
+   * Updates an evaluation job. You can only update certain fields of the job's
+   * EvaluationJobConfig: `humanAnnotationConfig.instruction`,
+   * `exampleCount`, and `exampleSamplePercentage`.
+   *
+   * If you want to change any other aspect of the evaluation job, you must
+   * delete the job and create a new one.
    *
    * @param {Object} request
    *   The request object that will be sent.
@@ -3322,8 +3417,16 @@ class DataLabelingServiceClient {
    *   Required. Evaluation job that is going to be updated.
    *
    *   This object should have the same structure as [EvaluationJob]{@link google.cloud.datalabeling.v1beta1.EvaluationJob}
-   * @param {Object} request.updateMask
-   *   Optional. Mask for which field in evaluation_job should be updated.
+   * @param {Object} [request.updateMask]
+   *   Optional. Mask for which fields to update. You can only provide the
+   *   following fields:
+   *
+   *   * `evaluationJobConfig.humanAnnotationConfig.instruction`
+   *   * `evaluationJobConfig.exampleCount`
+   *   * `evaluationJobConfig.exampleSamplePercentage`
+   *
+   *   You can provide more than one of these fields by separating them with
+   *   commas.
    *
    *   This object should have the same structure as [FieldMask]{@link google.protobuf.FieldMask}
    * @param {Object} [options]
@@ -3346,12 +3449,7 @@ class DataLabelingServiceClient {
    * });
    *
    * const evaluationJob = {};
-   * const updateMask = {};
-   * const request = {
-   *   evaluationJob: evaluationJob,
-   *   updateMask: updateMask,
-   * };
-   * client.updateEvaluationJob(request)
+   * client.updateEvaluationJob({evaluationJob: evaluationJob})
    *   .then(responses => {
    *     const response = responses[0];
    *     // doThingsWith(response)
@@ -3385,7 +3483,8 @@ class DataLabelingServiceClient {
    *   The request object that will be sent.
    * @param {string} request.name
    *   Required. Name of the evaluation job. Format:
-   *   'projects/{project_id}/evaluationJobs/{evaluation_job_id}'
+   *
+   *   "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/interfaces/CallOptions.html} for the details.
@@ -3434,14 +3533,15 @@ class DataLabelingServiceClient {
   }
 
   /**
-   * Pauses an evaluation job. Pausing a evaluation job that is already in
-   * PAUSED state will be a no-op.
+   * Pauses an evaluation job. Pausing an evaluation job that is already in a
+   * `PAUSED` state is a no-op.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.name
    *   Required. Name of the evaluation job that is going to be paused. Format:
-   *   'projects/{project_id}/evaluationJobs/{evaluation_job_id}'
+   *
+   *   "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/interfaces/CallOptions.html} for the details.
@@ -3482,14 +3582,15 @@ class DataLabelingServiceClient {
   }
 
   /**
-   * Resumes a paused evaluation job. Deleted evaluation job can't be resumed.
-   * Resuming a running evaluation job will be a no-op.
+   * Resumes a paused evaluation job. A deleted evaluation job can't be resumed.
+   * Resuming a running or scheduled evaluation job is a no-op.
    *
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.name
    *   Required. Name of the evaluation job that is going to be resumed. Format:
-   *   'projects/{project_id}/evaluationJobs/{evaluation_job_id}'
+   *
+   *   "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/interfaces/CallOptions.html} for the details.
@@ -3536,7 +3637,8 @@ class DataLabelingServiceClient {
    *   The request object that will be sent.
    * @param {string} request.name
    *   Required. Name of the evaluation job that is going to be deleted. Format:
-   *   'projects/{project_id}/evaluationJobs/{evaluation_job_id}'
+   *
+   *   "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
    * @param {Object} [options]
    *   Optional parameters. You can override the default settings for this call, e.g, timeout,
    *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/interfaces/CallOptions.html} for the details.
@@ -3583,12 +3685,17 @@ class DataLabelingServiceClient {
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. Evaluation resource parent. Format:
-   *   "projects/{project_id}"
-   * @param {string} request.filter
-   *   Optional. Only support filter by model id and job state. Format:
-   *   "evaluation_job.model_id = {model_id} AND evaluation_job.state =
-   *   {EvaluationJob::State}"
+   *   Required. Evaluation job resource parent. Format:
+   *   "projects/<var>{project_id}</var>"
+   * @param {string} [request.filter]
+   *   Optional. You can filter the jobs to list by model_id (also known as
+   *   model_name, as described in
+   *   EvaluationJob.modelVersion) or by
+   *   evaluation job state (as described in EvaluationJob.state). To filter
+   *   by both criteria, use the `AND` operator or the `OR` operator. For example,
+   *   you can use the following string for your filter:
+   *   "evaluation<span>_</span>job.model_id = <var>{model_name}</var> AND
+   *   evaluation<span>_</span>job.state = <var>{evaluation_job_state}</var>"
    * @param {number} [request.pageSize]
    *   The maximum number of resources contained in the underlying API
    *   response. If page streaming is performed per-resource, this
@@ -3628,13 +3735,8 @@ class DataLabelingServiceClient {
    *
    * // Iterate over all elements.
    * const formattedParent = client.projectPath('[PROJECT]');
-   * const filter = '';
-   * const request = {
-   *   parent: formattedParent,
-   *   filter: filter,
-   * };
    *
-   * client.listEvaluationJobs(request)
+   * client.listEvaluationJobs({parent: formattedParent})
    *   .then(responses => {
    *     const resources = responses[0];
    *     for (const resource of resources) {
@@ -3647,11 +3749,6 @@ class DataLabelingServiceClient {
    *
    * // Or obtain the paged response.
    * const formattedParent = client.projectPath('[PROJECT]');
-   * const filter = '';
-   * const request = {
-   *   parent: formattedParent,
-   *   filter: filter,
-   * };
    *
    *
    * const options = {autoPaginate: false};
@@ -3670,7 +3767,7 @@ class DataLabelingServiceClient {
    *     return client.listEvaluationJobs(nextRequest, options).then(callback);
    *   }
    * }
-   * client.listEvaluationJobs(request, options)
+   * client.listEvaluationJobs({parent: formattedParent}, options)
    *   .then(callback)
    *   .catch(err => {
    *     console.error(err);
@@ -3710,12 +3807,17 @@ class DataLabelingServiceClient {
    * @param {Object} request
    *   The request object that will be sent.
    * @param {string} request.parent
-   *   Required. Evaluation resource parent. Format:
-   *   "projects/{project_id}"
-   * @param {string} request.filter
-   *   Optional. Only support filter by model id and job state. Format:
-   *   "evaluation_job.model_id = {model_id} AND evaluation_job.state =
-   *   {EvaluationJob::State}"
+   *   Required. Evaluation job resource parent. Format:
+   *   "projects/<var>{project_id}</var>"
+   * @param {string} [request.filter]
+   *   Optional. You can filter the jobs to list by model_id (also known as
+   *   model_name, as described in
+   *   EvaluationJob.modelVersion) or by
+   *   evaluation job state (as described in EvaluationJob.state). To filter
+   *   by both criteria, use the `AND` operator or the `OR` operator. For example,
+   *   you can use the following string for your filter:
+   *   "evaluation<span>_</span>job.model_id = <var>{model_name}</var> AND
+   *   evaluation<span>_</span>job.state = <var>{evaluation_job_state}</var>"
    * @param {number} [request.pageSize]
    *   The maximum number of resources contained in the underlying API
    *   response. If page streaming is performed per-resource, this
@@ -3737,12 +3839,7 @@ class DataLabelingServiceClient {
    * });
    *
    * const formattedParent = client.projectPath('[PROJECT]');
-   * const filter = '';
-   * const request = {
-   *   parent: formattedParent,
-   *   filter: filter,
-   * };
-   * client.listEvaluationJobsStream(request)
+   * client.listEvaluationJobsStream({parent: formattedParent})
    *   .on('data', element => {
    *     // doThingsWith(element)
    *   }).on('error', err => {
@@ -3756,58 +3853,6 @@ class DataLabelingServiceClient {
       this._innerApiCalls.listEvaluationJobs,
       request,
       options
-    );
-  }
-
-  /**
-   * Deletes an annotated dataset by resource name.
-   *
-   * @param {Object} request
-   *   The request object that will be sent.
-   * @param {string} [request.name]
-   *   Required. Name of the annotated dataset to delete, format:
-   *   projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
-   *   {annotated_dataset_id}
-   * @param {Object} [options]
-   *   Optional parameters. You can override the default settings for this call, e.g, timeout,
-   *   retries, paginations, etc. See [gax.CallOptions]{@link https://googleapis.github.io/gax-nodejs/interfaces/CallOptions.html} for the details.
-   * @param {function(?Error)} [callback]
-   *   The function which will be called with the result of the API call.
-   * @returns {Promise} - The promise which resolves when API call finishes.
-   *   The promise has a method named "cancel" which cancels the ongoing API call.
-   *
-   * @example
-   *
-   * const datalabeling = require('datalabeling.v1beta1');
-   *
-   * const client = new datalabeling.v1beta1.DataLabelingServiceClient({
-   *   // optional auth parameters.
-   * });
-   *
-   *
-   * client.deleteAnnotatedDataset({}).catch(err => {
-   *   console.error(err);
-   * });
-   */
-  deleteAnnotatedDataset(request, options, callback) {
-    if (options instanceof Function && callback === undefined) {
-      callback = options;
-      options = {};
-    }
-    request = request || {};
-    options = options || {};
-    options.otherArgs = options.otherArgs || {};
-    options.otherArgs.headers = options.otherArgs.headers || {};
-    options.otherArgs.headers[
-      'x-goog-request-params'
-    ] = gax.routingHeader.fromParams({
-      name: request.name,
-    });
-
-    return this._innerApiCalls.deleteAnnotatedDataset(
-      request,
-      options,
-      callback
     );
   }
 

@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,55 +16,77 @@
 // to be loaded as the JS file.
 
 /**
- * Defines an evaluation job that is triggered periodically to generate
- * evaluations.
+ * Defines an evaluation job that runs periodically to generate
+ * Evaluations. [Creating an evaluation
+ * job](https://cloud.google.com/ml-engine/docs/continuous-evaluation/create-job) is the starting point
+ * for using continuous evaluation.
  *
  * @property {string} name
- *   Format: 'projects/{project_id}/evaluationJobs/{evaluation_job_id}'
+ *   Output only. After you create a job, Data Labeling Service assigns a name
+ *   to the job with the following format:
+ *
+ *   "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
  *
  * @property {string} description
- *   Description of the job. The description can be up to
- *   25000 characters long.
+ *   Required. Description of the job. The description can be up to 25,000
+ *   characters long.
  *
  * @property {number} state
+ *   Output only. Describes the current state of the job.
+ *
  *   The number should be among the values of [State]{@link google.cloud.datalabeling.v1beta1.State}
  *
  * @property {string} schedule
- *   Describes the schedule on which the job will be executed. Minimum schedule
- *   unit is 1 day.
+ *   Required. Describes the interval at which the job runs. This interval must
+ *   be at least 1 day, and it is rounded to the nearest day. For example, if
+ *   you specify a 50-hour interval, the job runs every 2 days.
  *
- *   The schedule can be either of the following types:
- *   * [Crontab](http://en.wikipedia.org/wiki/Cron#Overview)
- *   * English-like
+ *   You can provide the schedule in
+ *   [crontab format](https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules) or in an
+ *   [English-like
+ *   format](https://cloud.google.com/appengine/docs/standard/python/config/cronref#schedule_format).
  *
- *   [schedule](https:
- *   //cloud.google.com/scheduler/docs/configuring/cron-job-schedules)
+ *   Regardless of what you specify, the job will run at 10:00 AM UTC. Only the
+ *   interval from this schedule is used, not the specific time of day.
  *
  * @property {string} modelVersion
- *   The versioned model that is being evaluated here.
- *   Only one job is allowed for each model name.
- *   Format: 'projects/* /models/* /versions/*'
+ *   Required. The [AI Platform Prediction model
+ *   version](https://cloud.google.com/ml-engine/docs/prediction-overview) to be evaluated. Prediction
+ *   input and output is sampled from this model version. When creating an
+ *   evaluation job, specify the model version in the following format:
+ *
+ *   "projects/<var>{project_id}</var>/models/<var>{model_name}</var>/versions/<var>{version_name}</var>"
+ *
+ *   There can only be one evaluation job per model version.
  *
  * @property {Object} evaluationJobConfig
- *   Detailed config for running this eval job.
+ *   Required. Configuration details for the evaluation job.
  *
  *   This object should have the same structure as [EvaluationJobConfig]{@link google.cloud.datalabeling.v1beta1.EvaluationJobConfig}
  *
  * @property {string} annotationSpecSet
- *   Name of the AnnotationSpecSet.
+ *   Required. Name of the AnnotationSpecSet describing all the
+ *   labels that your machine learning model outputs. You must create this
+ *   resource before you create an evaluation job and provide its name in the
+ *   following format:
+ *
+ *   "projects/<var>{project_id}</var>/annotationSpecSets/<var>{annotation_spec_set_id}</var>"
  *
  * @property {boolean} labelMissingGroundTruth
- *   If a human annotation should be requested when some data don't have ground
- *   truth.
+ *   Required. Whether you want Data Labeling Service to provide ground truth
+ *   labels for prediction input. If you want the service to assign human
+ *   labelers to annotate your data, set this to `true`. If you want to provide
+ *   your own ground truth labels in the evaluation job's BigQuery table, set
+ *   this to `false`.
  *
  * @property {Object[]} attempts
- *   Output only. Any attempts with errors happening in evaluation job runs each
- *   time will be recorded here incrementally.
+ *   Output only. Every time the evaluation job runs and an error occurs, the
+ *   failed attempt is appended to this array.
  *
  *   This object should have the same structure as [Attempt]{@link google.cloud.datalabeling.v1beta1.Attempt}
  *
  * @property {Object} createTime
- *   Timestamp when this evaluation job was created.
+ *   Output only. Timestamp of when this evaluation job was created.
  *
  *   This object should have the same structure as [Timestamp]{@link google.protobuf.Timestamp}
  *
@@ -83,66 +105,167 @@ const EvaluationJob = {
    */
   State: {
     STATE_UNSPECIFIED: 0,
+
+    /**
+     * The job is scheduled to run at the configured interval. You
+     * can pause or
+     * delete the job.
+     *
+     * When the job is in this state, it samples prediction input and output
+     * from your model version into your BigQuery table as predictions occur.
+     */
     SCHEDULED: 1,
+
+    /**
+     * The job is currently running. When the job runs, Data Labeling Service
+     * does several things:
+     *
+     * 1. If you have configured your job to use Data Labeling Service for
+     *    ground truth labeling, the service creates a
+     *    Dataset and a labeling task for all data sampled
+     *    since the last time the job ran. Human labelers provide ground truth
+     *    labels for your data. Human labeling may take hours, or even days,
+     *    depending on how much data has been sampled. The job remains in the
+     *    `RUNNING` state during this time, and it can even be running multiple
+     *    times in parallel if it gets triggered again (for example 24 hours
+     *    later) before the earlier run has completed. When human labelers have
+     *    finished labeling the data, the next step occurs.
+     *    <br><br>
+     *    If you have configured your job to provide your own ground truth
+     *    labels, Data Labeling Service still creates a Dataset for newly
+     *    sampled data, but it expects that you have already added ground truth
+     *    labels to the BigQuery table by this time. The next step occurs
+     *    immediately.
+     *
+     * 2. Data Labeling Service creates an Evaluation by comparing your
+     *    model version's predictions with the ground truth labels.
+     *
+     * If the job remains in this state for a long time, it continues to sample
+     * prediction data into your BigQuery table and will run again at the next
+     * interval, even if it causes the job to run multiple times in parallel.
+     */
     RUNNING: 2,
+
+    /**
+     * The job is not sampling prediction input and output into your BigQuery
+     * table and it will not run according to its schedule. You can
+     * resume the job.
+     */
     PAUSED: 3,
+
+    /**
+     * The job has this state right before it is deleted.
+     */
     STOPPED: 4
   }
 };
 
 /**
+ * Configures specific details of how a continuous evaluation job works. Provide
+ * this configuration when you create an EvaluationJob.
+ *
  * @property {Object} imageClassificationConfig
+ *   Specify this field if your model version performs image classification or
+ *   general classification.
+ *
+ *   `annotationSpecSet` in this configuration must match
+ *   EvaluationJob.annotationSpecSet.
+ *   `allowMultiLabel` in this configuration must match
+ *   `classificationMetadata.isMultiLabel` in input_config.
+ *
  *   This object should have the same structure as [ImageClassificationConfig]{@link google.cloud.datalabeling.v1beta1.ImageClassificationConfig}
  *
  * @property {Object} boundingPolyConfig
+ *   Specify this field if your model version performs image object detection
+ *   (bounding box detection).
+ *
+ *   `annotationSpecSet` in this configuration must match
+ *   EvaluationJob.annotationSpecSet.
+ *
  *   This object should have the same structure as [BoundingPolyConfig]{@link google.cloud.datalabeling.v1beta1.BoundingPolyConfig}
  *
- * @property {Object} videoClassificationConfig
- *   This object should have the same structure as [VideoClassificationConfig]{@link google.cloud.datalabeling.v1beta1.VideoClassificationConfig}
- *
- * @property {Object} objectDetectionConfig
- *   This object should have the same structure as [ObjectDetectionConfig]{@link google.cloud.datalabeling.v1beta1.ObjectDetectionConfig}
- *
  * @property {Object} textClassificationConfig
+ *   Specify this field if your model version performs text classification.
+ *
+ *   `annotationSpecSet` in this configuration must match
+ *   EvaluationJob.annotationSpecSet.
+ *   `allowMultiLabel` in this configuration must match
+ *   `classificationMetadata.isMultiLabel` in input_config.
+ *
  *   This object should have the same structure as [TextClassificationConfig]{@link google.cloud.datalabeling.v1beta1.TextClassificationConfig}
  *
- * @property {Object} objectTrackingConfig
- *   This object should have the same structure as [ObjectTrackingConfig]{@link google.cloud.datalabeling.v1beta1.ObjectTrackingConfig}
- *
  * @property {Object} inputConfig
- *   Input config for data, gcs_source in the config will be the root path for
- *   data. Data should be organzied chronically under that path.
+ *   Rquired. Details for the sampled prediction input. Within this
+ *   configuration, there are requirements for several fields:
+ *
+ *   * `dataType` must be one of `IMAGE`, `TEXT`, or `GENERAL_DATA`.
+ *   * `annotationType` must be one of `IMAGE_CLASSIFICATION_ANNOTATION`,
+ *     `TEXT_CLASSIFICATION_ANNOTATION`, `GENERAL_CLASSIFICATION_ANNOTATION`,
+ *     or `IMAGE_BOUNDING_BOX_ANNOTATION` (image object detection).
+ *   * If your machine learning model performs classification, you must specify
+ *     `classificationMetadata.isMultiLabel`.
+ *   * You must specify `bigquerySource` (not `gcsSource`).
  *
  *   This object should have the same structure as [InputConfig]{@link google.cloud.datalabeling.v1beta1.InputConfig}
  *
  * @property {Object} evaluationConfig
- *   Config used to create evaluation.
+ *   Required. Details for calculating evaluation metrics and creating
+ *   Evaulations. If your model version performs image object
+ *   detection, you must specify the `boundingBoxEvaluationOptions` field within
+ *   this configuration. Otherwise, provide an empty object for this
+ *   configuration.
  *
  *   This object should have the same structure as [EvaluationConfig]{@link google.cloud.datalabeling.v1beta1.EvaluationConfig}
  *
  * @property {Object} humanAnnotationConfig
+ *   Optional. Details for human annotation of your data. If you set
+ *   labelMissingGroundTruth to
+ *   `true` for this evaluation job, then you must specify this field. If you
+ *   plan to provide your own ground truth labels, then omit this field.
+ *
+ *   Note that you must create an Instruction resource before you can
+ *   specify this field. Provide the name of the instruction resource in the
+ *   `instruction` field within this configuration.
+ *
  *   This object should have the same structure as [HumanAnnotationConfig]{@link google.cloud.datalabeling.v1beta1.HumanAnnotationConfig}
  *
  * @property {Object.<string, string>} bigqueryImportKeys
- *   Mappings between reserved keys for bigquery import and customized tensor
- *   names. Key is the reserved key, value is tensor name in the bigquery table.
- *   Different annotation type has different required key mapping. See user
- *   manual for more details:
+ *   Required. Prediction keys that tell Data Labeling Service where to find the
+ *   data for evaluation in your BigQuery table. When the service samples
+ *   prediction input and output from your model version and saves it to
+ *   BigQuery, the data gets stored as JSON strings in the BigQuery table. These
+ *   keys tell Data Labeling Service how to parse the JSON.
  *
- *   https:
- *   //docs.google.com/document/d/1bg1meMIBGY
- *   // 9I5QEoFoHSX6u9LsZQYBSmPt6E9SxqHZc/edit#heading=h.tfyjhxhvsqem
+ *   You can provide the following entries in this field:
+ *
+ *   * `data_json_key`: the data key for prediction input. You must provide
+ *     either this key or `reference_json_key`.
+ *   * `reference_json_key`: the data reference key for prediction input. You
+ *     must provide either this key or `data_json_key`.
+ *   * `label_json_key`: the label key for prediction output. Required.
+ *   * `label_score_json_key`: the score key for prediction output. Required.
+ *   * `bounding_box_json_key`: the bounding box key for prediction output.
+ *     Required if your model version perform image object detection.
+ *
+ *   Learn [how to configure prediction
+ *   keys](https://cloud.google.com/ml-engine/docs/continuous-evaluation/create-job#prediction-keys).
  *
  * @property {number} exampleCount
- *   Max number of examples to collect in each period.
+ *   Required. The maximum number of predictions to sample and save to BigQuery
+ *   during each evaluation interval. This limit
+ *   overrides `example_sample_percentage`: even if the service has not sampled
+ *   enough predictions to fulfill `example_sample_perecentage` during an
+ *   interval, it stops sampling predictions when it meets this limit.
  *
  * @property {number} exampleSamplePercentage
- *   Percentage of examples to collect in each period. 0.1 means 10% of total
- *   examples will be collected, and 0.0 means no collection.
+ *   Required. Fraction of predictions to sample and save to BigQuery during
+ *   each evaluation interval. For example, 0.1 means
+ *   10% of predictions served by your model version get saved to BigQuery.
  *
  * @property {Object} evaluationJobAlertConfig
- *   Alert config for the evaluation job. The alert will be triggered when its
- *   criteria is met.
+ *   Optional. Configuration details for evaluation job alerts. Specify this
+ *   field if you want to receive email alerts if the evaluation job finds that
+ *   your predictions have low mean average precision during a run.
  *
  *   This object should have the same structure as [EvaluationJobAlertConfig]{@link google.cloud.datalabeling.v1beta1.EvaluationJobAlertConfig}
  *
@@ -155,12 +278,18 @@ const EvaluationJobConfig = {
 };
 
 /**
+ * Provides details for how an evaluation job sends email alerts based on the
+ * results of a run.
+ *
  * @property {string} email
- *   Required. Email of the user who will be receiving the alert.
+ *   Required. An email address to send alerts to.
  *
  * @property {number} minAcceptableMeanAveragePrecision
- *   If a single evaluation run's aggregate mean average precision is
- *   lower than this threshold, the alert will be triggered.
+ *   Required. A number between 0 and 1 that describes a minimum mean average
+ *   precision threshold. When the evaluation job runs, if it calculates that
+ *   your model version's predictions from the recent interval have
+ *   meanAveragePrecision below this
+ *   threshold, then it sends an alert to your specified email.
  *
  * @typedef EvaluationJobAlertConfig
  * @memberof google.cloud.datalabeling.v1beta1
@@ -171,12 +300,14 @@ const EvaluationJobAlertConfig = {
 };
 
 /**
- * Records a failed attempt.
+ * Records a failed evaluation job run.
  *
  * @property {Object} attemptTime
  *   This object should have the same structure as [Timestamp]{@link google.protobuf.Timestamp}
  *
  * @property {Object[]} partialFailures
+ *   Details of errors that occurred.
+ *
  *   This object should have the same structure as [Status]{@link google.rpc.Status}
  *
  * @typedef Attempt

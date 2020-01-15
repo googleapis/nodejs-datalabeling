@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -71,6 +71,9 @@ const Dataset = {
  *   This object should have the same structure as [GcsSource]{@link google.cloud.datalabeling.v1beta1.GcsSource}
  *
  * @property {Object} bigquerySource
+ *   Source located in BigQuery. You must specify this field if you are using
+ *   this InputConfig in an EvaluationJob.
+ *
  *   This object should have the same structure as [BigQuerySource]{@link google.cloud.datalabeling.v1beta1.BigQuerySource}
  *
  * @property {number} dataType
@@ -79,16 +82,16 @@ const Dataset = {
  *   The number should be among the values of [DataType]{@link google.cloud.datalabeling.v1beta1.DataType}
  *
  * @property {number} annotationType
- *   Optional. If input contains annotation, user needs to specify the
- *   type and metadata of the annotation when creating it as an annotated
- *   dataset.
+ *   Optional. The type of annotation to be performed on this data. You must
+ *   specify this field if you are using this InputConfig in an
+ *   EvaluationJob.
  *
  *   The number should be among the values of [AnnotationType]{@link google.cloud.datalabeling.v1beta1.AnnotationType}
  *
  * @property {Object} classificationMetadata
- *   Optional. Metadata about annotations in the input. Each annotation type may
- *   have different metadata.
- *   Metadata for classification problem.
+ *   Optional. Metadata about annotations for the input. You must specify this
+ *   field if you are using this InputConfig in an EvaluationJob for a
+ *   model version that performs classification.
  *
  *   This object should have the same structure as [ClassificationMetadata]{@link google.cloud.datalabeling.v1beta1.ClassificationMetadata}
  *
@@ -149,11 +152,25 @@ const GcsSource = {
 };
 
 /**
- * The BigQuery location for the input content.
+ * The BigQuery location for input data. If used in an EvaluationJob, this
+ * is where the service saves the prediction input and output sampled from the
+ * model version.
  *
  * @property {string} inputUri
- *   Required. BigQuery URI to a table, up to 2000 characters long.
- *   Accepted forms: BigQuery gs path e.g. bq://projectId.bqDatasetId.bqTableId
+ *   Required. BigQuery URI to a table, up to 2,000 characters long. If you
+ *   specify the URI of a table that does not exist, Data Labeling Service
+ *   creates a table at the URI with the correct schema when you create your
+ *   EvaluationJob. If you specify the URI of a table that already exists,
+ *   it must have the
+ *   [correct
+ *   schema](https://cloud.google.com/ml-engine/docs/continuous-evaluation/create-job#table-schema).
+ *
+ *   Provide the table URI in the following format:
+ *
+ *   "bq://<var>{your_project_id}</var>/<var>{your_dataset_name}</var>/<var>{your_table_name}</var>"
+ *
+ *   [Learn
+ *   more](https://cloud.google.com/ml-engine/docs/continuous-evaluation/create-job#table-schema).
  *
  * @typedef BigQuerySource
  * @memberof google.cloud.datalabeling.v1beta1
@@ -444,8 +461,20 @@ const Example = {
  */
 const DataType = {
   DATA_TYPE_UNSPECIFIED: 0,
+
+  /**
+   * Allowed for continuous evaluation.
+   */
   IMAGE: 1,
   VIDEO: 2,
+
+  /**
+   * Allowed for continuous evaluation.
+   */
   TEXT: 4,
+
+  /**
+   * Allowed for continuous evaluation.
+   */
   GENERAL_DATA: 6
 };

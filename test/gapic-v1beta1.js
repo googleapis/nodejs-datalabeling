@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -414,11 +414,15 @@ describe('DataLabelingServiceClient', () => {
 
       // Mock request
       const formattedName = client.datasetPath('[PROJECT]', '[DATASET]');
-      const annotatedDataset = 'annotatedDataset-1407812655';
+      const formattedAnnotatedDataset = client.annotatedDatasetPath(
+        '[PROJECT]',
+        '[DATASET]',
+        '[ANNOTATED_DATASET]'
+      );
       const outputConfig = {};
       const request = {
         name: formattedName,
-        annotatedDataset: annotatedDataset,
+        annotatedDataset: formattedAnnotatedDataset,
         outputConfig: outputConfig,
       };
 
@@ -461,11 +465,15 @@ describe('DataLabelingServiceClient', () => {
 
       // Mock request
       const formattedName = client.datasetPath('[PROJECT]', '[DATASET]');
-      const annotatedDataset = 'annotatedDataset-1407812655';
+      const formattedAnnotatedDataset = client.annotatedDatasetPath(
+        '[PROJECT]',
+        '[DATASET]',
+        '[ANNOTATED_DATASET]'
+      );
       const outputConfig = {};
       const request = {
         name: formattedName,
-        annotatedDataset: annotatedDataset,
+        annotatedDataset: formattedAnnotatedDataset,
         outputConfig: outputConfig,
       };
 
@@ -781,6 +789,65 @@ describe('DataLabelingServiceClient', () => {
         assert(err instanceof Error);
         assert.strictEqual(err.code, FAKE_STATUS_CODE);
         assert(typeof response === 'undefined');
+        done();
+      });
+    });
+  });
+
+  describe('deleteAnnotatedDataset', () => {
+    it('invokes deleteAnnotatedDataset without error', done => {
+      const client = new datalabelingModule.v1beta1.DataLabelingServiceClient({
+        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        projectId: 'bogus',
+      });
+
+      // Mock request
+      const formattedName = client.annotatedDatasetPath(
+        '[PROJECT]',
+        '[DATASET]',
+        '[ANNOTATED_DATASET]'
+      );
+      const request = {
+        name: formattedName,
+      };
+
+      // Mock Grpc layer
+      client._innerApiCalls.deleteAnnotatedDataset = mockSimpleGrpcMethod(
+        request
+      );
+
+      client.deleteAnnotatedDataset(request, err => {
+        assert.ifError(err);
+        done();
+      });
+    });
+
+    it('invokes deleteAnnotatedDataset with error', done => {
+      const client = new datalabelingModule.v1beta1.DataLabelingServiceClient({
+        credentials: {client_email: 'bogus', private_key: 'bogus'},
+        projectId: 'bogus',
+      });
+
+      // Mock request
+      const formattedName = client.annotatedDatasetPath(
+        '[PROJECT]',
+        '[DATASET]',
+        '[ANNOTATED_DATASET]'
+      );
+      const request = {
+        name: formattedName,
+      };
+
+      // Mock Grpc layer
+      client._innerApiCalls.deleteAnnotatedDataset = mockSimpleGrpcMethod(
+        request,
+        null,
+        error
+      );
+
+      client.deleteAnnotatedDataset(request, err => {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, FAKE_STATUS_CODE);
         done();
       });
     });
@@ -1883,11 +1950,13 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedParent = client.projectPath('[PROJECT]');
-      const filter = 'filter-1274492040';
+      const formattedParent = client.evaluationPath(
+        '[PROJECT]',
+        '[DATASET]',
+        '[EVALUATION]'
+      );
       const request = {
         parent: formattedParent,
-        filter: filter,
       };
 
       // Mock response
@@ -1923,11 +1992,13 @@ describe('DataLabelingServiceClient', () => {
       });
 
       // Mock request
-      const formattedParent = client.projectPath('[PROJECT]');
-      const filter = 'filter-1274492040';
+      const formattedParent = client.evaluationPath(
+        '[PROJECT]',
+        '[DATASET]',
+        '[EVALUATION]'
+      );
       const request = {
         parent: formattedParent,
-        filter: filter,
       };
 
       // Mock Grpc layer
@@ -2104,10 +2175,8 @@ describe('DataLabelingServiceClient', () => {
 
       // Mock request
       const evaluationJob = {};
-      const updateMask = {};
       const request = {
         evaluationJob: evaluationJob,
-        updateMask: updateMask,
       };
 
       // Mock response
@@ -2147,10 +2216,8 @@ describe('DataLabelingServiceClient', () => {
 
       // Mock request
       const evaluationJob = {};
-      const updateMask = {};
       const request = {
         evaluationJob: evaluationJob,
-        updateMask: updateMask,
       };
 
       // Mock Grpc layer
@@ -2419,10 +2486,8 @@ describe('DataLabelingServiceClient', () => {
 
       // Mock request
       const formattedParent = client.projectPath('[PROJECT]');
-      const filter = 'filter-1274492040';
       const request = {
         parent: formattedParent,
-        filter: filter,
       };
 
       // Mock response
@@ -2459,10 +2524,8 @@ describe('DataLabelingServiceClient', () => {
 
       // Mock request
       const formattedParent = client.projectPath('[PROJECT]');
-      const filter = 'filter-1274492040';
       const request = {
         parent: formattedParent,
-        filter: filter,
       };
 
       // Mock Grpc layer
@@ -2476,51 +2539,6 @@ describe('DataLabelingServiceClient', () => {
         assert(err instanceof Error);
         assert.strictEqual(err.code, FAKE_STATUS_CODE);
         assert(typeof response === 'undefined');
-        done();
-      });
-    });
-  });
-
-  describe('deleteAnnotatedDataset', () => {
-    it('invokes deleteAnnotatedDataset without error', done => {
-      const client = new datalabelingModule.v1beta1.DataLabelingServiceClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
-        projectId: 'bogus',
-      });
-
-      // Mock request
-      const request = {};
-
-      // Mock Grpc layer
-      client._innerApiCalls.deleteAnnotatedDataset = mockSimpleGrpcMethod(
-        request
-      );
-
-      client.deleteAnnotatedDataset(request, err => {
-        assert.ifError(err);
-        done();
-      });
-    });
-
-    it('invokes deleteAnnotatedDataset with error', done => {
-      const client = new datalabelingModule.v1beta1.DataLabelingServiceClient({
-        credentials: {client_email: 'bogus', private_key: 'bogus'},
-        projectId: 'bogus',
-      });
-
-      // Mock request
-      const request = {};
-
-      // Mock Grpc layer
-      client._innerApiCalls.deleteAnnotatedDataset = mockSimpleGrpcMethod(
-        request,
-        null,
-        error
-      );
-
-      client.deleteAnnotatedDataset(request, err => {
-        assert(err instanceof Error);
-        assert.strictEqual(err.code, FAKE_STATUS_CODE);
         done();
       });
     });

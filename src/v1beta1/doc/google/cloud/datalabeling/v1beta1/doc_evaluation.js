@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,44 +16,50 @@
 // to be loaded as the JS file.
 
 /**
- * Describes an evaluation between 2 annotated datasets. Created by an
- * evaluation plan.
+ * Describes an evaluation between a machine learning model's predictions and
+ * ground truth labels. Created when an EvaluationJob runs successfully.
  *
  * @property {string} name
- *   Resource name of an evaluation.
- *   Format:
- *   'projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}'
+ *   Output only. Resource name of an evaluation. The name has the following
+ *   format:
+ *
+ *   "projects/<var>{project_id}</var>/datasets/<var>{dataset_id}</var>/evaluations/<var>{evaluation_id</var>}'
  *
  * @property {Object} config
- *   Options used in evaluation plan for creating the evaluation.
+ *   Output only. Options used in the evaluation job that created this
+ *   evaluation.
  *
  *   This object should have the same structure as [EvaluationConfig]{@link google.cloud.datalabeling.v1beta1.EvaluationConfig}
  *
  * @property {Object} evaluationJobRunTime
- *   Output only. Timestamp when the evaluation plan triggered this evaluation
- *   flow.
+ *   Output only. Timestamp for when the evaluation job that created this
+ *   evaluation ran.
  *
  *   This object should have the same structure as [Timestamp]{@link google.protobuf.Timestamp}
  *
  * @property {Object} createTime
- *   Output only. Timestamp when this model evaluation was created.
+ *   Output only. Timestamp for when this evaluation was created.
  *
  *   This object should have the same structure as [Timestamp]{@link google.protobuf.Timestamp}
  *
  * @property {Object} evaluationMetrics
- *   Output only. Metrics of the evaluation.
+ *   Output only. Metrics comparing predictions to ground truth labels.
  *
  *   This object should have the same structure as [EvaluationMetrics]{@link google.cloud.datalabeling.v1beta1.EvaluationMetrics}
  *
  * @property {number} annotationType
- *   Type of the annotation to compute metrics for in the groundtruth and
- *   annotation labeled dataset. Required for creation.
+ *   Output only. Type of task that the model version being evaluated performs,
+ *   as defined in the
+ *
+ *   evaluationJobConfig.inputConfig.annotationType
+ *   field of the evaluation job that created this evaluation.
  *
  *   The number should be among the values of [AnnotationType]{@link google.cloud.datalabeling.v1beta1.AnnotationType}
  *
  * @property {number} evaluatedItemCount
- *   Output only. Count of items in groundtruth dataset included in this
- *   evaluation. Will be unset if annotation type is not applicable.
+ *   Output only. The number of items in the ground truth dataset that were used
+ *   for this evaluation. Only populated when the evaulation is for certain
+ *   AnnotationTypes.
  *
  * @typedef Evaluation
  * @memberof google.cloud.datalabeling.v1beta1
@@ -64,7 +70,14 @@ const Evaluation = {
 };
 
 /**
+ * Configuration details used for calculating evaluation metrics and creating an
+ * Evaluation.
+ *
  * @property {Object} boundingBoxEvaluationOptions
+ *   Only specify this field if the related model performs image object
+ *   detection (`IMAGE_BOUNDING_BOX_ANNOTATION`). Describes how to evaluate
+ *   bounding boxes.
+ *
  *   This object should have the same structure as [BoundingBoxEvaluationOptions]{@link google.cloud.datalabeling.v1beta1.BoundingBoxEvaluationOptions}
  *
  * @typedef EvaluationConfig
@@ -79,7 +92,12 @@ const EvaluationConfig = {
  * Options regarding evaluation between bounding boxes.
  *
  * @property {number} iouThreshold
- *   Minimize IoU required to consider 2 bounding boxes are matched.
+ *   Minimum
+ *   [intersection-over-union
+ *
+ *   (IOU)](https://cloud.google.com/vision/automl/object-detection/docs/evaluate#intersection-over-union)
+ *   required for 2 bounding boxes to be considered a match. This must be a
+ *   number between 0 and 1.
  *
  * @typedef BoundingBoxEvaluationOptions
  * @memberof google.cloud.datalabeling.v1beta1
@@ -105,12 +123,17 @@ const EvaluationMetrics = {
 };
 
 /**
+ * Metrics calculated for a classification model.
+ *
  * @property {Object} prCurve
- *   Precision-recall curve.
+ *   Precision-recall curve based on ground truth labels, predicted labels, and
+ *   scores for the predicted labels.
  *
  *   This object should have the same structure as [PrCurve]{@link google.cloud.datalabeling.v1beta1.PrCurve}
  *
  * @property {Object} confusionMatrix
+ *   Confusion matrix of predicted labels vs. ground truth labels.
+ *
  *   This object should have the same structure as [ConfusionMatrix]{@link google.cloud.datalabeling.v1beta1.ConfusionMatrix}
  *
  * @typedef ClassificationMetrics
@@ -122,6 +145,8 @@ const ClassificationMetrics = {
 };
 
 /**
+ * Metrics calculated for an image object detection (bounding box) model.
+ *
  * @property {Object} prCurve
  *   Precision-recall curve.
  *
@@ -137,20 +162,24 @@ const ObjectDetectionMetrics = {
 
 /**
  * @property {Object} annotationSpec
- *   PR curve against which annotation spec. Could be empty.
+ *   The annotation spec of the label for which the precision-recall curve
+ *   calculated. If this field is empty, that means the precision-recall curve
+ *   is an aggregate curve for all labels.
  *
  *   This object should have the same structure as [AnnotationSpec]{@link google.cloud.datalabeling.v1beta1.AnnotationSpec}
  *
  * @property {number} areaUnderCurve
- *   Area under precision recall curve.
+ *   Area under the precision-recall curve. Not to be confused with area under
+ *   a receiver operating characteristic (ROC) curve.
  *
  * @property {Object[]} confidenceMetricsEntries
- *   entries to draw PR graph.
+ *   Entries that make up the precision-recall graph. Each entry is a "point" on
+ *   the graph drawn for a different `confidence_threshold`.
  *
  *   This object should have the same structure as [ConfidenceMetricsEntry]{@link google.cloud.datalabeling.v1beta1.ConfidenceMetricsEntry}
  *
  * @property {number} meanAveragePrecision
- *   mean average prcision of this curve.
+ *   Mean average prcision of this curve.
  *
  * @typedef PrCurve
  * @memberof google.cloud.datalabeling.v1beta1
@@ -161,8 +190,18 @@ const PrCurve = {
 
   /**
    * @property {number} confidenceThreshold
-   *   Threshold used for this entry, for example, IoU threshold for bounding
-   *   box problem, or detection threshold for classification.
+   *   Threshold used for this entry.
+   *
+   *   For classification tasks, this is a classification threshold: a
+   *   predicted label is categorized as positive or negative (in the context of
+   *   this point on the PR curve) based on whether the label's score meets this
+   *   threshold.
+   *
+   *   For image object detection (bounding box) tasks, this is the
+   *   [intersection-over-union
+   *
+   *   (IOU)](https://cloud.google.com/vision/automl/object-detection/docs/evaluate#intersection-over-union)
+   *   threshold for the context of this point on the PR curve.
    *
    * @property {number} recall
    *   Recall value.
@@ -180,10 +219,7 @@ const PrCurve = {
    *   Precision value for entries with label that has highest score.
    *
    * @property {number} f1ScoreAt1
-   *   The harmonic mean of
-   *   recall_at1
-   *   and
-   *   precision_at1.
+   *   The harmonic mean of recall_at1 and precision_at1.
    *
    * @property {number} recallAt5
    *   Recall value for entries with label that has highest 5 scores.
@@ -192,10 +228,7 @@ const PrCurve = {
    *   Precision value for entries with label that has highest 5 scores.
    *
    * @property {number} f1ScoreAt5
-   *   The harmonic mean of
-   *   recall_at5
-   *   and
-   *   precision_at5.
+   *   The harmonic mean of recall_at5 and precision_at5.
    *
    * @typedef ConfidenceMetricsEntry
    * @memberof google.cloud.datalabeling.v1beta1
@@ -207,8 +240,9 @@ const PrCurve = {
 };
 
 /**
- * Confusion matrix of the model running the classification. Not applicable
- * when label filtering is specified in evaluation option.
+ * Confusion matrix of the model running the classification. Only applicable
+ * when the metrics entry aggregates multiple labels. Not applicable when the
+ * entry is for a single label.
  *
  * @property {Object[]} row
  *   This object should have the same structure as [Row]{@link google.cloud.datalabeling.v1beta1.Row}
@@ -222,12 +256,13 @@ const ConfusionMatrix = {
 
   /**
    * @property {Object} annotationSpec
-   *   The predicted annotation spec.
+   *   The annotation spec of a predicted label.
    *
    *   This object should have the same structure as [AnnotationSpec]{@link google.cloud.datalabeling.v1beta1.AnnotationSpec}
    *
    * @property {number} itemCount
-   *   Number of items being predicted as this label.
+   *   Number of items predicted to have this label. (The ground truth label for
+   *   these items is the `Row.annotationSpec` of this entry's parent.)
    *
    * @typedef ConfusionMatrixEntry
    * @memberof google.cloud.datalabeling.v1beta1
@@ -238,15 +273,17 @@ const ConfusionMatrix = {
   },
 
   /**
-   * A row in the confusion matrix.
+   * A row in the confusion matrix. Each entry in this row has the same
+   * ground truth label.
    *
    * @property {Object} annotationSpec
-   *   the original annotation spec of this row.
+   *   The annotation spec of the ground truth label for this row.
    *
    *   This object should have the same structure as [AnnotationSpec]{@link google.cloud.datalabeling.v1beta1.AnnotationSpec}
    *
    * @property {Object[]} entries
-   *   Info describing predicted label distribution.
+   *   A list of the confusion matrix entries. One entry for each possible
+   *   predicted label.
    *
    *   This object should have the same structure as [ConfusionMatrixEntry]{@link google.cloud.datalabeling.v1beta1.ConfusionMatrixEntry}
    *

@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,9 +67,9 @@ const GetDatasetRequest = {
  * @property {string} pageToken
  *   Optional. A token identifying a page of results for the server to return.
  *   Typically obtained by
- *   ListDatasetsResponse.next_page_token
- *   of the previous [DataLabelingService.ListDatasets] call. Returns the first
- *   page if empty.
+ *   ListDatasetsResponse.next_page_token of the previous
+ *   [DataLabelingService.ListDatasets] call.
+ *   Returns the first page if empty.
  *
  * @typedef ListDatasetsRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -203,9 +203,9 @@ const GetDataItemRequest = {
  * @property {string} pageToken
  *   Optional. A token identifying a page of results for the server to return.
  *   Typically obtained by
- *   ListDataItemsResponse.next_page_token
- *   of the previous [DataLabelingService.ListDataItems] call. Return first page
- *   if empty.
+ *   ListDataItemsResponse.next_page_token of the previous
+ *   [DataLabelingService.ListDataItems] call.
+ *   Return first page if empty.
  *
  * @typedef ListDataItemsRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -267,9 +267,9 @@ const GetAnnotatedDatasetRequest = {
  * @property {string} pageToken
  *   Optional. A token identifying a page of results for the server to return.
  *   Typically obtained by
- *   ListAnnotatedDatasetsResponse.next_page_token
- *   of the previous [DataLabelingService.ListAnnotatedDatasets] call. Return
- *   first page if empty.
+ *   ListAnnotatedDatasetsResponse.next_page_token of the previous
+ *   [DataLabelingService.ListAnnotatedDatasets] call.
+ *   Return first page if empty.
  *
  * @typedef ListAnnotatedDatasetsRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -593,9 +593,9 @@ const GetExampleRequest = {
  * @property {string} pageToken
  *   Optional. A token identifying a page of results for the server to return.
  *   Typically obtained by
- *   ListExamplesResponse.next_page_token
- *   of the previous [DataLabelingService.ListExamples] call. Return first page
- *   if empty.
+ *   ListExamplesResponse.next_page_token of the previous
+ *   [DataLabelingService.ListExamples] call.
+ *   Return first page if empty.
  *
  * @typedef ListExamplesRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -678,9 +678,9 @@ const GetAnnotationSpecSetRequest = {
  * @property {string} pageToken
  *   Optional. A token identifying a page of results for the server to return.
  *   Typically obtained by
- *   ListAnnotationSpecSetsResponse.next_page_token
- *   of the previous [DataLabelingService.ListAnnotationSpecSets] call. Return
- *   first page if empty.
+ *   ListAnnotationSpecSetsResponse.next_page_token of the previous
+ *   [DataLabelingService.ListAnnotationSpecSets] call.
+ *   Return first page if empty.
  *
  * @typedef ListAnnotationSpecSetsRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -791,9 +791,9 @@ const DeleteInstructionRequest = {
  * @property {string} pageToken
  *   Optional. A token identifying a page of results for the server to return.
  *   Typically obtained by
- *   ListInstructionsResponse.next_page_token
- *   of the previous [DataLabelingService.ListInstructions] call. Return first
- *   page if empty.
+ *   ListInstructionsResponse.next_page_token of the previous
+ *   [DataLabelingService.ListInstructions] call.
+ *   Return first page if empty.
  *
  * @typedef ListInstructionsRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -827,7 +827,8 @@ const ListInstructionsResponse = {
  *
  * @property {string} name
  *   Required. Name of the evaluation. Format:
- *   'projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}'
+ *
+ *   "projects/<var>{project_id}</var>/datasets/<var>{dataset_id}</var>/evaluations/<var>{evaluation_id}</var>'
  *
  * @typedef GetEvaluationRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -841,16 +842,41 @@ const GetEvaluationRequest = {
  * Request message for SearchEvaluation.
  *
  * @property {string} parent
- *   Required. Evaluation search parent. Format:
- *   projects/{project_id}
+ *   Required. Evaluation search parent (project ID). Format:
+ *   "projects/<var>{project_id}</var>"
  *
  * @property {string} filter
- *   Optional. Support filtering by model id, job state, start and end time.
- *   Format:
- *   "evaluation_job.evaluation_job_id = {evaluation_job_id} AND
- *   evaluation_job.evaluation_job_run_time_start = {timestamp} AND
- *   evaluation_job.evaluation_job_run_time_end = {timestamp} AND
- *   annotation_spec.display_name = {display_name}"
+ *   Optional. To search evaluations, you can filter by the following:
+ *
+ *   * evaluation<span>_</span>job.evaluation_job_id (the last part of
+ *     EvaluationJob.name)
+ *   * evaluation<span>_</span>job.model_id (the <var>{model_name}</var> portion
+ *     of EvaluationJob.modelVersion)
+ *   * evaluation<span>_</span>job.evaluation_job_run_time_start (Minimum
+ *     threshold for the
+ *     evaluationJobRunTime that created
+ *     the evaluation)
+ *   * evaluation<span>_</span>job.evaluation_job_run_time_end (Maximum
+ *     threshold for the
+ *     evaluationJobRunTime that created
+ *     the evaluation)
+ *   * evaluation<span>_</span>job.job_state (EvaluationJob.state)
+ *   * annotation<span>_</span>spec.display_name (the Evaluation contains a
+ *     metric for the annotation spec with this
+ *     displayName)
+ *
+ *   To filter by multiple critiera, use the `AND` operator or the `OR`
+ *   operator. The following examples shows a string that filters by several
+ *   critiera:
+ *
+ *   "evaluation<span>_</span>job.evaluation_job_id =
+ *   <var>{evaluation_job_id}</var> AND evaluation<span>_</span>job.model_id =
+ *   <var>{model_name}</var> AND
+ *   evaluation<span>_</span>job.evaluation_job_run_time_start =
+ *   <var>{timestamp_1}</var> AND
+ *   evaluation<span>_</span>job.evaluation_job_run_time_end =
+ *   <var>{timestamp_2}</var> AND annotation<span>_</span>spec.display_name =
+ *   <var>{display_name}</var>"
  *
  * @property {number} pageSize
  *   Optional. Requested page size. Server may return fewer results than
@@ -858,10 +884,12 @@ const GetEvaluationRequest = {
  *
  * @property {string} pageToken
  *   Optional. A token identifying a page of results for the server to return.
- *   Typically obtained by
- *   SearchEvaluationsResponse.next_page_token
- *   of the previous [DataLabelingService.SearchEvaluations] call. Return first
- *   page if empty.
+ *   Typically obtained by the
+ *   nextPageToken of the response
+ *   to a previous search request.
+ *
+ *   If you don't specify this field, the API call requests the first page of
+ *   the search.
  *
  * @typedef SearchEvaluationsRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -875,7 +903,7 @@ const SearchEvaluationsRequest = {
  * Results of searching evaluations.
  *
  * @property {Object[]} evaluations
- *   The list of evaluations to return.
+ *   The list of evaluations matching the search.
  *
  *   This object should have the same structure as [Evaluation]{@link google.cloud.datalabeling.v1beta1.Evaluation}
  *
@@ -894,9 +922,10 @@ const SearchEvaluationsResponse = {
  * Request message of SearchExampleComparisons.
  *
  * @property {string} parent
- *   Required. Name of the Evaluation resource to search example comparison
- *   from. Format:
- *   projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}
+ *   Required. Name of the Evaluation resource to search for example
+ *   comparisons from. Format:
+ *
+ *   "projects/<var>{project_id}</var>/datasets/<var>{dataset_id}</var>/evaluations/<var>{evaluation_id}</var>"
  *
  * @property {number} pageSize
  *   Optional. Requested page size. Server may return fewer results than
@@ -904,10 +933,12 @@ const SearchEvaluationsResponse = {
  *
  * @property {string} pageToken
  *   Optional. A token identifying a page of results for the server to return.
- *   Typically obtained by
- *   SearchExampleComparisons.next_page_token of the previous
- *   [DataLabelingService.SearchExampleComparisons] call.
- *   Return first page if empty.
+ *   Typically obtained by the
+ *   nextPageToken of the response
+ *   to a previous search rquest.
+ *
+ *   If you don't specify this field, the API call requests the first page of
+ *   the search.
  *
  * @typedef SearchExampleComparisonsRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -921,6 +952,8 @@ const SearchExampleComparisonsRequest = {
  * Results of searching example comparisons.
  *
  * @property {Object[]} exampleComparisons
+ *   A list of example comparisons matching the search criteria.
+ *
  *   This object should have the same structure as [ExampleComparison]{@link google.cloud.datalabeling.v1beta1.ExampleComparison}
  *
  * @property {string} nextPageToken
@@ -934,13 +967,17 @@ const SearchExampleComparisonsResponse = {
   // This is for documentation. Actual contents will be loaded by gRPC.
 
   /**
-   * Example comparisons containing annotation comparison between groundtruth
-   * and predictions.
+   * Example comparisons comparing ground truth output and predictions for a
+   * specific input.
    *
    * @property {Object} groundTruthExample
+   *   The ground truth output for the input.
+   *
    *   This object should have the same structure as [Example]{@link google.cloud.datalabeling.v1beta1.Example}
    *
    * @property {Object[]} modelCreatedExamples
+   *   Predictions by the model for the input.
+   *
    *   This object should have the same structure as [Example]{@link google.cloud.datalabeling.v1beta1.Example}
    *
    * @typedef ExampleComparison
@@ -956,8 +993,8 @@ const SearchExampleComparisonsResponse = {
  * Request message for CreateEvaluationJob.
  *
  * @property {string} parent
- *   Required. Evaluation job resource parent, format:
- *   projects/{project_id}.
+ *   Required. Evaluation job resource parent. Format:
+ *   "projects/<var>{project_id}</var>"
  *
  * @property {Object} job
  *   Required. The evaluation job to create.
@@ -981,7 +1018,15 @@ const CreateEvaluationJobRequest = {
  *   This object should have the same structure as [EvaluationJob]{@link google.cloud.datalabeling.v1beta1.EvaluationJob}
  *
  * @property {Object} updateMask
- *   Optional. Mask for which field in evaluation_job should be updated.
+ *   Optional. Mask for which fields to update. You can only provide the
+ *   following fields:
+ *
+ *   * `evaluationJobConfig.humanAnnotationConfig.instruction`
+ *   * `evaluationJobConfig.exampleCount`
+ *   * `evaluationJobConfig.exampleSamplePercentage`
+ *
+ *   You can provide more than one of these fields by separating them with
+ *   commas.
  *
  *   This object should have the same structure as [FieldMask]{@link google.protobuf.FieldMask}
  *
@@ -998,7 +1043,8 @@ const UpdateEvaluationJobRequest = {
  *
  * @property {string} name
  *   Required. Name of the evaluation job. Format:
- *   'projects/{project_id}/evaluationJobs/{evaluation_job_id}'
+ *
+ *   "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
  *
  * @typedef GetEvaluationJobRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -1013,7 +1059,8 @@ const GetEvaluationJobRequest = {
  *
  * @property {string} name
  *   Required. Name of the evaluation job that is going to be paused. Format:
- *   'projects/{project_id}/evaluationJobs/{evaluation_job_id}'
+ *
+ *   "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
  *
  * @typedef PauseEvaluationJobRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -1028,7 +1075,8 @@ const PauseEvaluationJobRequest = {
  *
  * @property {string} name
  *   Required. Name of the evaluation job that is going to be resumed. Format:
- *   'projects/{project_id}/evaluationJobs/{evaluation_job_id}'
+ *
+ *   "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
  *
  * @typedef ResumeEvaluationJobRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -1043,7 +1091,8 @@ const ResumeEvaluationJobRequest = {
  *
  * @property {string} name
  *   Required. Name of the evaluation job that is going to be deleted. Format:
- *   'projects/{project_id}/evaluationJobs/{evaluation_job_id}'
+ *
+ *   "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
  *
  * @typedef DeleteEvaluationJobRequest
  * @memberof google.cloud.datalabeling.v1beta1
@@ -1057,13 +1106,18 @@ const DeleteEvaluationJobRequest = {
  * Request message for ListEvaluationJobs.
  *
  * @property {string} parent
- *   Required. Evaluation resource parent. Format:
- *   "projects/{project_id}"
+ *   Required. Evaluation job resource parent. Format:
+ *   "projects/<var>{project_id}</var>"
  *
  * @property {string} filter
- *   Optional. Only support filter by model id and job state. Format:
- *   "evaluation_job.model_id = {model_id} AND evaluation_job.state =
- *   {EvaluationJob::State}"
+ *   Optional. You can filter the jobs to list by model_id (also known as
+ *   model_name, as described in
+ *   EvaluationJob.modelVersion) or by
+ *   evaluation job state (as described in EvaluationJob.state). To filter
+ *   by both criteria, use the `AND` operator or the `OR` operator. For example,
+ *   you can use the following string for your filter:
+ *   "evaluation<span>_</span>job.model_id = <var>{model_name}</var> AND
+ *   evaluation<span>_</span>job.state = <var>{evaluation_job_state}</var>"
  *
  * @property {number} pageSize
  *   Optional. Requested page size. Server may return fewer results than
@@ -1071,10 +1125,10 @@ const DeleteEvaluationJobRequest = {
  *
  * @property {string} pageToken
  *   Optional. A token identifying a page of results for the server to return.
- *   Typically obtained by
- *   ListEvaluationJobs.next_page_token of the previous
- *   [DataLabelingService.ListEvaluationJobs] call.
- *   Return first page if empty.
+ *   Typically obtained by the
+ *   nextPageToken in the response
+ *   to the previous request. The request returns the first page if this is
+ *   empty.
  *
  * @typedef ListEvaluationJobsRequest
  * @memberof google.cloud.datalabeling.v1beta1

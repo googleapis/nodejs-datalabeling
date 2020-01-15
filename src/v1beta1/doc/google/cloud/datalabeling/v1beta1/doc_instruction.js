@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,11 +17,7 @@
 
 /**
  * Instruction of how to perform the labeling task for human operators.
- * Currently two types of instruction are supported - CSV file and PDF.
- * One of the two types instruction must be provided.
- * CSV file is only supported for image classification task. Instructions for
- * other task should be provided as PDF.
- * For image classification, CSV and PDF can be provided at the same time.
+ * Currently only PDF instruction is supported.
  *
  * @property {string} name
  *   Output only. Instruction resource name, format:
@@ -50,7 +46,7 @@
  *   The number should be among the values of [DataType]{@link google.cloud.datalabeling.v1beta1.DataType}
  *
  * @property {Object} csvInstruction
- *   One of CSV or PDF instruction is required.
+ *   Deprecated: this instruction format is not supported any more.
  *   Instruction from a CSV file, such as for classification task.
  *   The CSV file should have exact two columns, in the following format:
  *
@@ -60,7 +56,6 @@
  *   This object should have the same structure as [CsvInstruction]{@link google.cloud.datalabeling.v1beta1.CsvInstruction}
  *
  * @property {Object} pdfInstruction
- *   One of CSV or PDF instruction is required.
  *   Instruction from a PDF document. The PDF should be in a Cloud Storage
  *   bucket.
  *
@@ -79,6 +74,7 @@ const Instruction = {
 };
 
 /**
+ * Deprecated: this instruction format is not supported any more.
  * Instruction from a CSV file.
  *
  * @property {string} gcsFileUri

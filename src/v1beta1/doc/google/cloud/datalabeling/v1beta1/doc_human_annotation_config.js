@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -48,8 +48,8 @@
  *   For image related labeling, valid values are 1, 3, 5.
  *
  * @property {Object} questionDuration
- *   Optional. Maximum duration for contributors to answer a question. Default
- *   is 1800 seconds.
+ *   Optional. Maximum duration for contributors to answer a question. Maximum
+ *   is 3600 seconds. Default is 3600 seconds.
  *
  *   This object should have the same structure as [Duration]{@link google.protobuf.Duration}
  *

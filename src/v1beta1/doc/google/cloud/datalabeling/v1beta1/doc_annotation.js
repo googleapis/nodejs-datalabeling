@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -526,7 +526,8 @@ const AnnotationSentiment = {
 };
 
 /**
- * Specifies where is the answer from.
+ * Specifies where the annotation comes from (whether it was provided by a
+ * human labeler or a different source).
  *
  * @enum {number}
  * @memberof google.cloud.datalabeling.v1beta1
@@ -548,12 +549,13 @@ const AnnotationType = {
   ANNOTATION_TYPE_UNSPECIFIED: 0,
 
   /**
-   * Classification annotations in an image.
+   * Classification annotations in an image. Allowed for continuous evaluation.
    */
   IMAGE_CLASSIFICATION_ANNOTATION: 1,
 
   /**
-   * Bounding box annotations in an image.
+   * Bounding box annotations in an image. A form of image object detection.
+   * Allowed for continuous evaluation.
    */
   IMAGE_BOUNDING_BOX_ANNOTATION: 2,
 
@@ -599,7 +601,7 @@ const AnnotationType = {
   VIDEO_EVENT_ANNOTATION: 6,
 
   /**
-   * Classification for text.
+   * Classification for text. Allowed for continuous evaluation.
    */
   TEXT_CLASSIFICATION_ANNOTATION: 8,
 
@@ -609,7 +611,7 @@ const AnnotationType = {
   TEXT_ENTITY_EXTRACTION_ANNOTATION: 9,
 
   /**
-   * General classification.
+   * General classification. Allowed for continuous evaluation.
    */
   GENERAL_CLASSIFICATION_ANNOTATION: 14
 };
