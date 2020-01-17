@@ -18,7 +18,7 @@
 
 
 /* eslint-disable node/no-missing-require, no-unused-vars */
-const datalabeling = require('datalabeling');
+const datalabeling = require('@google-cloud/datalabeling');
 
 function main() {
   const dataLabelingServiceClient = new datalabeling.DataLabelingServiceClient();
