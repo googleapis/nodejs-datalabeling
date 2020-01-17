@@ -17,8 +17,8 @@ const path = require('path');
 module.exports = {
   entry: './src/index.ts',
   output: {
-    library: 'DataLabelingService',
-    filename: './data-labeling-service.js',
+    library: 'datalabeling',
+    filename: './datalabeling.js',
   },
   node: {
     child_process: 'empty',
