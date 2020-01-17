@@ -33,7 +33,8 @@ for version in versions:
             "main-service": f"datalabeling"            
         },
         proto_path=f'/google/cloud/datalabeling/{version}',
-        )
+        extra_proto_files=['google/cloud/common_resources.proto'],
+    )
     s.copy(library, excludes=['src/index.ts', 'README.md', 'package.json'])
 
 # Copy common templates
