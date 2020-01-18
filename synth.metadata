@@ -1,12 +1,12 @@
 {
-  "updateTime": "2020-01-17T00:55:01.659651Z",
+  "updateTime": "2020-01-18T12:15:22.285205Z",
   "sources": [
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "58e770d568a2b78168ddc19a874178fee8265a9d",
-        "internalRef": "290146169"
+        "sha": "7f0dab8177cf371ae019a082e2512de7ac102888",
+        "internalRef": "290326986"
       }
     },
     {
@@ -26,6 +26,365 @@
         "language": "typescript",
         "generator": "gapic-generator-typescript"
       }
+    }
+  ],
+  "newFiles": [
+    {
+      "path": ".eslintignore"
+    },
+    {
+      "path": ".eslintrc.yml"
+    },
+    {
+      "path": ".github/CONTRIBUTING.md"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE.md"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/bug_report.md"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/feature_request.md"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/support_request.md"
+    },
+    {
+      "path": ".github/PULL_REQUEST_TEMPLATE.md"
+    },
+    {
+      "path": ".github/release-please.yml"
+    },
+    {
+      "path": ".gitignore"
+    },
+    {
+      "path": ".jsdoc.js"
+    },
+    {
+      "path": ".kokoro/.gitattributes"
+    },
+    {
+      "path": ".kokoro/common.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node10/common.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node10/docs.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node10/lint.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node10/samples-test.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node10/system-test.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node10/test.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node12/common.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node12/test.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node8/common.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node8/docs.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node8/lint.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node8/samples-test.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node8/system-test-grpcjs.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node8/system-test.cfg"
+    },
+    {
+      "path": ".kokoro/continuous/node8/test.cfg"
+    },
+    {
+      "path": ".kokoro/docs.sh"
+    },
+    {
+      "path": ".kokoro/lint.sh"
+    },
+    {
+      "path": ".kokoro/presubmit/node10/common.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node10/docs.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node10/lint.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node10/samples-test.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node10/system-test.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node10/test.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node12/common.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node12/test.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node8/common.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node8/docs.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node8/lint.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node8/samples-test.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node8/system-test-grpcjs.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node8/system-test.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/node8/test.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/windows/common.cfg"
+    },
+    {
+      "path": ".kokoro/presubmit/windows/test.cfg"
+    },
+    {
+      "path": ".kokoro/publish.sh"
+    },
+    {
+      "path": ".kokoro/release/common.cfg"
+    },
+    {
+      "path": ".kokoro/release/docs.cfg"
+    },
+    {
+      "path": ".kokoro/release/docs.sh"
+    },
+    {
+      "path": ".kokoro/release/publish.cfg"
+    },
+    {
+      "path": ".kokoro/samples-test.sh"
+    },
+    {
+      "path": ".kokoro/system-test.sh"
+    },
+    {
+      "path": ".kokoro/test.bat"
+    },
+    {
+      "path": ".kokoro/test.sh"
+    },
+    {
+      "path": ".kokoro/trampoline.sh"
+    },
+    {
+      "path": ".nycrc"
+    },
+    {
+      "path": ".prettierignore"
+    },
+    {
+      "path": ".prettierrc"
+    },
+    {
+      "path": ".repo-metadata.json"
+    },
+    {
+      "path": "CHANGELOG.md"
+    },
+    {
+      "path": "CODE_OF_CONDUCT.md"
+    },
+    {
+      "path": "CONTRIBUTING.md"
+    },
+    {
+      "path": "LICENSE"
+    },
+    {
+      "path": "README.md"
+    },
+    {
+      "path": "codecov.yaml"
+    },
+    {
+      "path": "linkinator.config.json"
+    },
+    {
+      "path": "package.json"
+    },
+    {
+      "path": "protos/google/cloud/common_resources.proto"
+    },
+    {
+      "path": "protos/google/cloud/datalabeling/v1beta1/annotation.proto"
+    },
+    {
+      "path": "protos/google/cloud/datalabeling/v1beta1/annotation_spec_set.proto"
+    },
+    {
+      "path": "protos/google/cloud/datalabeling/v1beta1/data_labeling_service.proto"
+    },
+    {
+      "path": "protos/google/cloud/datalabeling/v1beta1/data_payloads.proto"
+    },
+    {
+      "path": "protos/google/cloud/datalabeling/v1beta1/dataset.proto"
+    },
+    {
+      "path": "protos/google/cloud/datalabeling/v1beta1/evaluation.proto"
+    },
+    {
+      "path": "protos/google/cloud/datalabeling/v1beta1/evaluation_job.proto"
+    },
+    {
+      "path": "protos/google/cloud/datalabeling/v1beta1/human_annotation_config.proto"
+    },
+    {
+      "path": "protos/google/cloud/datalabeling/v1beta1/instruction.proto"
+    },
+    {
+      "path": "protos/google/cloud/datalabeling/v1beta1/operations.proto"
+    },
+    {
+      "path": "protos/protos.d.ts"
+    },
+    {
+      "path": "protos/protos.js"
+    },
+    {
+      "path": "protos/protos.json"
+    },
+    {
+      "path": "renovate.json"
+    },
+    {
+      "path": "samples/.eslintrc.yml"
+    },
+    {
+      "path": "samples/README.md"
+    },
+    {
+      "path": "samples/package.json"
+    },
+    {
+      "path": "samples/quickstart.js"
+    },
+    {
+      "path": "samples/test/test.js"
+    },
+    {
+      "path": "src/index.ts"
+    },
+    {
+      "path": "src/v1beta1/data_labeling_service_client.ts"
+    },
+    {
+      "path": "src/v1beta1/data_labeling_service_client_config.json"
+    },
+    {
+      "path": "src/v1beta1/data_labeling_service_proto_list.json"
+    },
+    {
+      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_annotation.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_annotation_spec_set.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_data_labeling_service.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_data_payloads.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_dataset.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_evaluation.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_evaluation_job.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_human_annotation_config.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_instruction.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/longrunning/doc_operations.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/protobuf/doc_any.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/protobuf/doc_duration.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/protobuf/doc_empty.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/protobuf/doc_field_mask.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/protobuf/doc_timestamp.js"
+    },
+    {
+      "path": "src/v1beta1/doc/google/rpc/doc_status.js"
+    },
+    {
+      "path": "src/v1beta1/index.ts"
+    },
+    {
+      "path": "synth.metadata"
+    },
+    {
+      "path": "synth.py"
+    },
+    {
+      "path": "system-test/fixtures/sample/src/index.js"
+    },
+    {
+      "path": "system-test/fixtures/sample/src/index.ts"
+    },
+    {
+      "path": "system-test/install.ts"
+    },
+    {
+      "path": "test/gapic-data_labeling_service-v1beta1.ts"
+    },
+    {
+      "path": "tsconfig.json"
+    },
+    {
+      "path": "tslint.json"
+    },
+    {
+      "path": "webpack.config.js"
     }
   ]
 }
