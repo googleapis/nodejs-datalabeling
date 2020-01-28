@@ -1,5 +1,5 @@
 {
-  "updateTime": "2020-01-28T12:16:55.282969Z",
+  "updateTime": "2020-01-28T20:13:23.060447Z",
   "sources": [
     {
       "git": {
@@ -36,12 +36,6 @@
       "path": ".eslintrc.yml"
     },
     {
-      "path": ".github/CONTRIBUTING.md"
-    },
-    {
-      "path": ".github/ISSUE_TEMPLATE.md"
-    },
-    {
       "path": ".github/ISSUE_TEMPLATE/bug_report.md"
     },
     {
@@ -57,13 +51,7 @@
       "path": ".github/release-please.yml"
     },
     {
-      "path": ".gitignore"
-    },
-    {
       "path": ".jsdoc.js"
-    },
-    {
-      "path": ".kokoro/.gitattributes"
     },
     {
       "path": ".kokoro/common.cfg"
@@ -94,21 +82,6 @@
     },
     {
       "path": ".kokoro/continuous/node8/common.cfg"
-    },
-    {
-      "path": ".kokoro/continuous/node8/docs.cfg"
-    },
-    {
-      "path": ".kokoro/continuous/node8/lint.cfg"
-    },
-    {
-      "path": ".kokoro/continuous/node8/samples-test.cfg"
-    },
-    {
-      "path": ".kokoro/continuous/node8/system-test-grpcjs.cfg"
-    },
-    {
-      "path": ".kokoro/continuous/node8/system-test.cfg"
     },
     {
       "path": ".kokoro/continuous/node8/test.cfg"
@@ -147,21 +120,6 @@
       "path": ".kokoro/presubmit/node8/common.cfg"
     },
     {
-      "path": ".kokoro/presubmit/node8/docs.cfg"
-    },
-    {
-      "path": ".kokoro/presubmit/node8/lint.cfg"
-    },
-    {
-      "path": ".kokoro/presubmit/node8/samples-test.cfg"
-    },
-    {
-      "path": ".kokoro/presubmit/node8/system-test-grpcjs.cfg"
-    },
-    {
-      "path": ".kokoro/presubmit/node8/system-test.cfg"
-    },
-    {
       "path": ".kokoro/presubmit/node8/test.cfg"
     },
     {
@@ -172,9 +130,6 @@
     },
     {
       "path": ".kokoro/publish.sh"
-    },
-    {
-      "path": ".kokoro/release/common.cfg"
     },
     {
       "path": ".kokoro/release/docs.cfg"
@@ -210,12 +165,6 @@
       "path": ".prettierrc"
     },
     {
-      "path": ".repo-metadata.json"
-    },
-    {
-      "path": "CHANGELOG.md"
-    },
-    {
       "path": "CODE_OF_CONDUCT.md"
     },
     {
@@ -232,9 +181,6 @@
     },
     {
       "path": "linkinator.config.json"
-    },
-    {
-      "path": "package.json"
     },
     {
       "path": "protos/google/cloud/common_resources.proto"
@@ -282,22 +228,7 @@
       "path": "renovate.json"
     },
     {
-      "path": "samples/.eslintrc.yml"
-    },
-    {
       "path": "samples/README.md"
-    },
-    {
-      "path": "samples/package.json"
-    },
-    {
-      "path": "samples/quickstart.js"
-    },
-    {
-      "path": "samples/test/test.js"
-    },
-    {
-      "path": "src/index.ts"
     },
     {
       "path": "src/v1beta1/data_labeling_service_client.ts"
@@ -309,58 +240,7 @@
       "path": "src/v1beta1/data_labeling_service_proto_list.json"
     },
     {
-      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_annotation.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_annotation_spec_set.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_data_labeling_service.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_data_payloads.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_dataset.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_evaluation.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_evaluation_job.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_human_annotation_config.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/cloud/datalabeling/v1beta1/doc_instruction.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/longrunning/doc_operations.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/protobuf/doc_any.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/protobuf/doc_duration.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/protobuf/doc_empty.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/protobuf/doc_field_mask.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/protobuf/doc_timestamp.js"
-    },
-    {
-      "path": "src/v1beta1/doc/google/rpc/doc_status.js"
-    },
-    {
       "path": "src/v1beta1/index.ts"
-    },
-    {
-      "path": "synth.py"
     },
     {
       "path": "system-test/fixtures/sample/src/index.js"
