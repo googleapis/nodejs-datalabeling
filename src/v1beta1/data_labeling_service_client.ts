@@ -143,24 +143,20 @@ export class DataLabelingServiceClient {
     // identifiers to uniquely identify resources within the API.
     // Create useful helper objects for these.
     this._pathTemplates = {
-      projectPathTemplate: new gaxModule.PathTemplate('projects/{project}'),
+      annotationSpecSetPathTemplate: new gaxModule.PathTemplate(
+        'projects/{project}/annotationSpecSets/{annotation_spec_set}'
+      ),
       datasetPathTemplate: new gaxModule.PathTemplate(
         'projects/{project}/datasets/{dataset}'
-      ),
-      annotatedDatasetPathTemplate: new gaxModule.PathTemplate(
-        'projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}'
       ),
       dataItemPathTemplate: new gaxModule.PathTemplate(
         'projects/{project}/datasets/{dataset}/dataItems/{data_item}'
       ),
+      annotatedDatasetPathTemplate: new gaxModule.PathTemplate(
+        'projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}'
+      ),
       examplePathTemplate: new gaxModule.PathTemplate(
         'projects/{project}/datasets/{dataset}/annotatedDatasets/{annotated_dataset}/examples/{example}'
-      ),
-      annotationSpecSetPathTemplate: new gaxModule.PathTemplate(
-        'projects/{project}/annotationSpecSets/{annotation_spec_set}'
-      ),
-      instructionPathTemplate: new gaxModule.PathTemplate(
-        'projects/{project}/instructions/{instruction}'
       ),
       evaluationPathTemplate: new gaxModule.PathTemplate(
         'projects/{project}/datasets/{dataset}/evaluations/{evaluation}'
@@ -168,6 +164,10 @@ export class DataLabelingServiceClient {
       evaluationJobPathTemplate: new gaxModule.PathTemplate(
         'projects/{project}/evaluationJobs/{evaluation_job}'
       ),
+      instructionPathTemplate: new gaxModule.PathTemplate(
+        'projects/{project}/instructions/{instruction}'
+      ),
+      projectPathTemplate: new gaxModule.PathTemplate('projects/{project}'),
     };
 
     // Some of the methods on this service return "paged" results,
@@ -4025,26 +4025,45 @@ export class DataLabelingServiceClient {
   // --------------------
 
   /**
-   * Return a fully-qualified project resource name string.
+   * Return a fully-qualified annotationSpecSet resource name string.
    *
    * @param {string} project
+   * @param {string} annotation_spec_set
    * @returns {string} Resource name string.
    */
-  projectPath(project: string) {
-    return this._pathTemplates.projectPathTemplate.render({
+  annotationSpecSetPath(project: string, annotationSpecSet: string) {
+    return this._pathTemplates.annotationSpecSetPathTemplate.render({
       project,
+      annotation_spec_set: annotationSpecSet,
     });
   }
 
   /**
-   * Parse the project from Project resource.
+   * Parse the project from AnnotationSpecSet resource.
    *
-   * @param {string} projectName
-   *   A fully-qualified path representing Project resource.
+   * @param {string} annotationSpecSetName
+   *   A fully-qualified path representing AnnotationSpecSet resource.
    * @returns {string} A string representing the project.
    */
-  matchProjectFromProjectName(projectName: string) {
-    return this._pathTemplates.projectPathTemplate.match(projectName).project;
+  matchProjectFromAnnotationSpecSetName(annotationSpecSetName: string) {
+    return this._pathTemplates.annotationSpecSetPathTemplate.match(
+      annotationSpecSetName
+    ).project;
+  }
+
+  /**
+   * Parse the annotation_spec_set from AnnotationSpecSet resource.
+   *
+   * @param {string} annotationSpecSetName
+   *   A fully-qualified path representing AnnotationSpecSet resource.
+   * @returns {string} A string representing the annotation_spec_set.
+   */
+  matchAnnotationSpecSetFromAnnotationSpecSetName(
+    annotationSpecSetName: string
+  ) {
+    return this._pathTemplates.annotationSpecSetPathTemplate.match(
+      annotationSpecSetName
+    ).annotation_spec_set;
   }
 
   /**
@@ -4081,6 +4100,56 @@ export class DataLabelingServiceClient {
    */
   matchDatasetFromDatasetName(datasetName: string) {
     return this._pathTemplates.datasetPathTemplate.match(datasetName).dataset;
+  }
+
+  /**
+   * Return a fully-qualified dataItem resource name string.
+   *
+   * @param {string} project
+   * @param {string} dataset
+   * @param {string} data_item
+   * @returns {string} Resource name string.
+   */
+  dataItemPath(project: string, dataset: string, dataItem: string) {
+    return this._pathTemplates.dataItemPathTemplate.render({
+      project,
+      dataset,
+      data_item: dataItem,
+    });
+  }
+
+  /**
+   * Parse the project from DataItem resource.
+   *
+   * @param {string} dataItemName
+   *   A fully-qualified path representing DataItem resource.
+   * @returns {string} A string representing the project.
+   */
+  matchProjectFromDataItemName(dataItemName: string) {
+    return this._pathTemplates.dataItemPathTemplate.match(dataItemName).project;
+  }
+
+  /**
+   * Parse the dataset from DataItem resource.
+   *
+   * @param {string} dataItemName
+   *   A fully-qualified path representing DataItem resource.
+   * @returns {string} A string representing the dataset.
+   */
+  matchDatasetFromDataItemName(dataItemName: string) {
+    return this._pathTemplates.dataItemPathTemplate.match(dataItemName).dataset;
+  }
+
+  /**
+   * Parse the data_item from DataItem resource.
+   *
+   * @param {string} dataItemName
+   *   A fully-qualified path representing DataItem resource.
+   * @returns {string} A string representing the data_item.
+   */
+  matchDataItemFromDataItemName(dataItemName: string) {
+    return this._pathTemplates.dataItemPathTemplate.match(dataItemName)
+      .data_item;
   }
 
   /**
@@ -4140,56 +4209,6 @@ export class DataLabelingServiceClient {
     return this._pathTemplates.annotatedDatasetPathTemplate.match(
       annotatedDatasetName
     ).annotated_dataset;
-  }
-
-  /**
-   * Return a fully-qualified dataItem resource name string.
-   *
-   * @param {string} project
-   * @param {string} dataset
-   * @param {string} data_item
-   * @returns {string} Resource name string.
-   */
-  dataItemPath(project: string, dataset: string, dataItem: string) {
-    return this._pathTemplates.dataItemPathTemplate.render({
-      project,
-      dataset,
-      data_item: dataItem,
-    });
-  }
-
-  /**
-   * Parse the project from DataItem resource.
-   *
-   * @param {string} dataItemName
-   *   A fully-qualified path representing DataItem resource.
-   * @returns {string} A string representing the project.
-   */
-  matchProjectFromDataItemName(dataItemName: string) {
-    return this._pathTemplates.dataItemPathTemplate.match(dataItemName).project;
-  }
-
-  /**
-   * Parse the dataset from DataItem resource.
-   *
-   * @param {string} dataItemName
-   *   A fully-qualified path representing DataItem resource.
-   * @returns {string} A string representing the dataset.
-   */
-  matchDatasetFromDataItemName(dataItemName: string) {
-    return this._pathTemplates.dataItemPathTemplate.match(dataItemName).dataset;
-  }
-
-  /**
-   * Parse the data_item from DataItem resource.
-   *
-   * @param {string} dataItemName
-   *   A fully-qualified path representing DataItem resource.
-   * @returns {string} A string representing the data_item.
-   */
-  matchDataItemFromDataItemName(dataItemName: string) {
-    return this._pathTemplates.dataItemPathTemplate.match(dataItemName)
-      .data_item;
   }
 
   /**
@@ -4258,86 +4277,6 @@ export class DataLabelingServiceClient {
    */
   matchExampleFromExampleName(exampleName: string) {
     return this._pathTemplates.examplePathTemplate.match(exampleName).example;
-  }
-
-  /**
-   * Return a fully-qualified annotationSpecSet resource name string.
-   *
-   * @param {string} project
-   * @param {string} annotation_spec_set
-   * @returns {string} Resource name string.
-   */
-  annotationSpecSetPath(project: string, annotationSpecSet: string) {
-    return this._pathTemplates.annotationSpecSetPathTemplate.render({
-      project,
-      annotation_spec_set: annotationSpecSet,
-    });
-  }
-
-  /**
-   * Parse the project from AnnotationSpecSet resource.
-   *
-   * @param {string} annotationSpecSetName
-   *   A fully-qualified path representing AnnotationSpecSet resource.
-   * @returns {string} A string representing the project.
-   */
-  matchProjectFromAnnotationSpecSetName(annotationSpecSetName: string) {
-    return this._pathTemplates.annotationSpecSetPathTemplate.match(
-      annotationSpecSetName
-    ).project;
-  }
-
-  /**
-   * Parse the annotation_spec_set from AnnotationSpecSet resource.
-   *
-   * @param {string} annotationSpecSetName
-   *   A fully-qualified path representing AnnotationSpecSet resource.
-   * @returns {string} A string representing the annotation_spec_set.
-   */
-  matchAnnotationSpecSetFromAnnotationSpecSetName(
-    annotationSpecSetName: string
-  ) {
-    return this._pathTemplates.annotationSpecSetPathTemplate.match(
-      annotationSpecSetName
-    ).annotation_spec_set;
-  }
-
-  /**
-   * Return a fully-qualified instruction resource name string.
-   *
-   * @param {string} project
-   * @param {string} instruction
-   * @returns {string} Resource name string.
-   */
-  instructionPath(project: string, instruction: string) {
-    return this._pathTemplates.instructionPathTemplate.render({
-      project,
-      instruction,
-    });
-  }
-
-  /**
-   * Parse the project from Instruction resource.
-   *
-   * @param {string} instructionName
-   *   A fully-qualified path representing Instruction resource.
-   * @returns {string} A string representing the project.
-   */
-  matchProjectFromInstructionName(instructionName: string) {
-    return this._pathTemplates.instructionPathTemplate.match(instructionName)
-      .project;
-  }
-
-  /**
-   * Parse the instruction from Instruction resource.
-   *
-   * @param {string} instructionName
-   *   A fully-qualified path representing Instruction resource.
-   * @returns {string} A string representing the instruction.
-   */
-  matchInstructionFromInstructionName(instructionName: string) {
-    return this._pathTemplates.instructionPathTemplate.match(instructionName)
-      .instruction;
   }
 
   /**
@@ -4430,6 +4369,67 @@ export class DataLabelingServiceClient {
     return this._pathTemplates.evaluationJobPathTemplate.match(
       evaluationJobName
     ).evaluation_job;
+  }
+
+  /**
+   * Return a fully-qualified instruction resource name string.
+   *
+   * @param {string} project
+   * @param {string} instruction
+   * @returns {string} Resource name string.
+   */
+  instructionPath(project: string, instruction: string) {
+    return this._pathTemplates.instructionPathTemplate.render({
+      project,
+      instruction,
+    });
+  }
+
+  /**
+   * Parse the project from Instruction resource.
+   *
+   * @param {string} instructionName
+   *   A fully-qualified path representing Instruction resource.
+   * @returns {string} A string representing the project.
+   */
+  matchProjectFromInstructionName(instructionName: string) {
+    return this._pathTemplates.instructionPathTemplate.match(instructionName)
+      .project;
+  }
+
+  /**
+   * Parse the instruction from Instruction resource.
+   *
+   * @param {string} instructionName
+   *   A fully-qualified path representing Instruction resource.
+   * @returns {string} A string representing the instruction.
+   */
+  matchInstructionFromInstructionName(instructionName: string) {
+    return this._pathTemplates.instructionPathTemplate.match(instructionName)
+      .instruction;
+  }
+
+  /**
+   * Return a fully-qualified project resource name string.
+   *
+   * @param {string} project
+   * @returns {string} Resource name string.
+   */
+  projectPath(project: string) {
+    return this._pathTemplates.projectPathTemplate.render({
+      project,
+    });
+  }
+
+  /**
+   * Parse the project from Project resource.
+   *
+   * @param {string} projectName
+   *   A fully-qualified path representing Project resource.
+   * @returns {string} A string representing the project.
+   */
+  matchProjectFromProjectName(projectName: string) {
+    return this._pathTemplates.projectPathTemplate.match(projectName).project;
   }
 
   /**
