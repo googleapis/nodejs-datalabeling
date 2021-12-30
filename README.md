@@ -6,7 +6,6 @@
 
 
 [![npm version](https://img.shields.io/npm/v/@google-cloud/datalabeling.svg)](https://www.npmjs.org/package/@google-cloud/datalabeling)
-[![codecov](https://img.shields.io/codecov/c/github/googleapis/nodejs-datalabeling/main.svg?style=flat)](https://codecov.io/gh/googleapis/nodejs-datalabeling)
 
 
 
